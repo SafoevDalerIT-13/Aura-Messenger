@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AmplicodePersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit moduleName="Messenger001.user-service.main" name="Default">
+        <packages>
+          <package value="ru.messenger" />
+        </packages>
+      </persistence-unit>
+      <persistence-unit moduleName="Messenger001.MessengerMonolith.main" name="Default">
+        <packages>
+          <package value="ru.messenger" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
+</project>

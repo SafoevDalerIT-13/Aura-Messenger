@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <style>
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        input:invalid {
+            border-color: red;
+        }
+        input:valid {
+            border-color: green;
+        }
+    </style>
+</head>
+<body>
+<h2>Регистрация</h2>
+
+<form id="registerForm">
+    <div>
+        <label>Имя пользователя:</label><br>
+        <input type="text" id="username" required
+               minlength="3" maxlength="50"
+               title="Имя должно быть от 3 до 50 символов">
+        <div class="error-message" id="usernameError"></div>
+    </div>
+    <br>
+
+    <div>
+        <label>Email:</label><br>
+        <input type="email"
+               id="email"
+               required
+               pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+               title="Введите корректный email (например: user@example.com)"
+               oninput="validateEmail(this)">
+        <div class="error-message" id="emailError"></div>
+    </div>
+    <br>
+
+    <div>
+        <label>Пароль:</label><br>
+        <input type="password"
+               id="password"
+               required
+               minlength="6"
+               maxlength="100"
+               title="Пароль должен быть от 6 до 100 символов">
+        <div class="error-message" id="passwordError"></div>
+    </div>
+    <br>
+
+    <button type="button" onclick="validateAndRegister()">Зарегистрироваться</button>
+</form>
+
+<p><a href="/login.html">Войти</a></p>
+
+<script>
+    // Валидация email
+    function validateEmail(input) {
+        const email = input.value;
+        const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (email && !pattern.test(email)) {
+            input.setCustomValidity('Введите корректный email (например: user@example.com)');
+            document.getElementById('emailError').textContent = 'Некорректный формат email';
+            document.getElementById('emailError').style.display = 'block';
+        } else {
+            input.setCustomValidity('');
+            document.getElementById('emailError').style.display = 'none';
+        }
+    }
+
+    // Валидация всей формы перед отправкой
+    function validateAndRegister() {
+        // Скрываем все ошибки
+        document.querySelectorAll('.error-message').forEach(el => {
+            el.style.display = 'none';
+        });
+
+        // Получаем значения
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        let isValid = true;
+
+        // Проверка username
+        if (username.length < 3 || username.length > 50) {
+            document.getElementById('usernameError').textContent =
+                'Имя пользователя должно быть от 3 до 50 символов';
+            document.getElementById('usernameError').style.display = 'block';
+            isValid = false;
+        }
+
+        // Проверка email
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+            document.getElementById('emailError').textContent =
+                'Введите корректный email (например: user@example.com)';
+            document.getElementById('emailError').style.display = 'block';
+            isValid = false;
+        }
+
+        // Проверка пароля
+        if (password.length < 6 || password.length > 100) {
+            document.getElementById('passwordError').textContent =
+                'Пароль должен быть от 6 до 100 символов';
+            document.getElementById('passwordError').style.display = 'block';
+            isValid = false;
+        }
+
+        // Если всё ок - отправляем
+        if (isValid) {
+            register(username, email, password);
+        }
+    }
+
+    // Отправка данных на сервер
+    function register(username, email, password) {
+        const userData = {
+            username: username,
+            email: email,
+            password: password
+        };
+
+        // Показываем индикатор загрузки
+        const button = document.querySelector('button');
+        const originalText = button.textContent;
+        button.textContent = 'Регистрация...';
+        button.disabled = true;
+
+        fetch('/api/v1/users/auth', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Регистрация успешна! Теперь войдите.');
+                    window.location.href = '/login.html';
+                } else {
+                    // Пытаемся получить текст ошибки
+                    return response.text().then(text => {
+                        try {
+                            const error = JSON.parse(text);
+                            alert('Ошибка: ' + (error.message || 'Неизвестная ошибка'));
+                        } catch {
+                            alert('Ошибка регистрации: ' + text);
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ошибка сети или сервера');
+            })
+            .finally(() => {
+                // Восстанавливаем кнопку
+                button.textContent = originalText;
+                button.disabled = false;
+            });
+    }
+
+    // Валидация в реальном времени
+    document.getElementById('username').addEventListener('input', function() {
+        const username = this.value.trim();
+        if (username.length > 0 && (username.length < 3 || username.length > 50)) {
+            document.getElementById('usernameError').textContent =
+                'Имя пользователя должно быть от 3 до 50 символов';
+            document.getElementById('usernameError').style.display = 'block';
+        } else {
+            document.getElementById('usernameError').style.display = 'none';
+        }
+    });
+
+    document.getElementById('password').addEventListener('input', function() {
+        const password = this.value;
+        if (password.length > 0 && (password.length < 6 || password.length > 100)) {
+            document.getElementById('passwordError').textContent =
+                'Пароль должен быть от 6 до 100 символов';
+            document.getElementById('passwordError').style.display = 'block';
+        } else {
+            document.getElementById('passwordError').style.display = 'none';
+        }
+    });
+</script>
+</body>
+</html>

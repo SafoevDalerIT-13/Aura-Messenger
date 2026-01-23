@@ -1,4 +1,7 @@
 package ru.messenger.user_service.domain.service.exception;
 
-public class UserNotFoundException {
+public class UserNotFoundException extends RuntimeException{
+    public UserNotFoundException(String message) {
+        super(message);
+    }
 }

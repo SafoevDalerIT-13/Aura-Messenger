@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <style>
+        .error {
+            color: red;
+            background: #ffe6e6;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid red;
+            display: none;
+        }
+        .success {
+            color: green;
+            background: #e6ffe6;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid green;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<h2>Вход в мессенджер</h2>
+
+<!-- Если есть параметр error в URL -->
+<div class="error" id="errorMessage" style="display: none;">
+    Неверное имя пользователя или пароль
+</div>
+
+<!-- Если есть параметр logout в URL -->
+<div class="success" id="logoutMessage" style="display: none;">
+    Вы успешно вышли из системы
+</div>
+
+<!-- СТАНДАРТНАЯ форма (без AJAX) -->
+<form action="/api/v1/auth/login" method="post">
+    <div>
+        <label>Имя пользователя:</label><br>
+        <input type="text" name="username" required>
+    </div>
+    <br>
+    <div>
+        <label>Пароль:</label><br>
+        <input type="password" name="password" required>
+    </div>
+    <br>
+    <button type="submit">Войти</button>
+</form>
+
+<p>Нет аккаунта? <a href="/auth.html">Зарегистрироваться</a></p>
+
+<script>
+    // Показываем сообщения при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        if (urlParams.has('error')) {
+            document.getElementById('errorMessage').style.display = 'block';
+            // Убираем параметр из URL чтобы при обновлении не показывалось
+            window.history.replaceState({}, '', '/login.html');
+        }
+
+        if (urlParams.has('logout')) {
+            document.getElementById('logoutMessage').style.display = 'block';
+            window.history.replaceState({}, '', '/login.html');
+        }
+
+        // Скрываем сообщения через 5 секунд
+        setTimeout(function() {
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('logoutMessage').style.display = 'none';
+        }, 5000);
+    });
+</script>
+</body>
+</html>

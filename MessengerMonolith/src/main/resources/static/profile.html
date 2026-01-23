@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Мой профиль</title>
+</head>
+<body>
+<h1>Мой профиль</h1>
+
+<nav>
+    <a href="/home.html">Главная</a> |
+    <a href="/api/v1/auth/logout">Выйти</a>
+</nav>
+
+<hr>
+
+<div>
+    <h3>Информация:</h3>
+    <p>
+        <strong>Имя пользователя:</strong>
+        <span id="username"></span>
+        <button onclick="editUsername()">✏️</button>
+    </p>
+    <p><strong>Email:</strong> <span id="email"></span></p>
+    <p><strong>Описание:</strong> <span id="descriptionText"></span></p>
+</div>
+
+<div id="message"></div>
+
+<hr>
+
+<!-- Форма изменения username (изначально скрыта) -->
+<div id="usernameEditForm" style="display: none; margin-bottom: 20px;">
+    <h3>Изменить имя пользователя:</h3>
+    <input type="text" id="newUsernameInput" placeholder="Новое имя пользователя">
+    <button onclick="saveUsername()">Сохранить</button>
+    <button onclick="cancelUsernameEdit()">Отмена</button>
+    <div id="usernameError" style="color: red; margin-top: 5px;"></div>
+</div>
+
+<div>
+    <h3>Изменить описание:</h3>
+    <textarea id="descriptionInput" rows="3" cols="50" placeholder="Расскажите о себе..."></textarea><br><br>
+    <button onclick="saveDescription()">Сохранить описание</button>
+</div>
+
+<script>
+    let currentUser = null;
+
+    // Загружаем профиль
+    function loadProfile() {
+        fetch('/api/v1/users/profile')
+            .then(response => {
+                if (!response.ok) throw new Error('Ошибка загрузки');
+                return response.json();
+            })
+            .then(user => {
+                currentUser = user;
+                updateProfileDisplay(user);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showMessage('Не удалось загрузить профиль', true);
+            });
+    }
+
+    // Обновляем отображение профиля
+    function updateProfileDisplay(user) {
+        document.getElementById('username').textContent = user.username || 'Нет';
+        document.getElementById('email').textContent = user.email || 'Нет';
+        document.getElementById('descriptionText').textContent = user.description || 'Нет описания';
+
+        if (user.description) {
+            document.getElementById('descriptionInput').value = user.description;
+        }
+    }
+
+    // Показать форму изменения username
+    function editUsername() {
+        document.getElementById('usernameEditForm').style.display = 'block';
+        document.getElementById('newUsernameInput').value = currentUser.username || '';
+        document.getElementById('newUsernameInput').focus();
+    }
+
+    // Сохранить новое имя пользователя
+    function saveUsername() {
+        const newUsername = document.getElementById('newUsernameInput').value.trim();
+        const usernameError = document.getElementById('usernameError');
+
+        // Валидация
+        if (!newUsername) {
+            usernameError.textContent = 'Имя пользователя не может быть пустым';
+            return;
+        }
+        if (newUsername.length < 3) {
+            usernameError.textContent = 'Имя должно быть не менее 3 символов';
+            return;
+        }
+        if (newUsername.length > 50) {
+            usernameError.textContent = 'Имя не должно превышать 50 символов';
+            return;
+        }
+
+        usernameError.textContent = '';
+
+        fetch('/api/v1/users/update/username', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: newUsername
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return response.text().then(text => {
+                        throw new Error(text || 'Ошибка сохранения');
+                    });
+                }
+            })
+            .then(updatedUser => {
+                currentUser = updatedUser;
+                updateProfileDisplay(updatedUser);
+                document.getElementById('usernameEditForm').style.display = 'none';
+                showMessage('Имя пользователя изменено!');
+
+                // Если поменялся username, нужно перелогиниться
+                showMessage('Имя изменено! Для применения изменений требуется перезайти.', false);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                usernameError.textContent = error.message || 'Ошибка изменения имени';
+                showMessage('Ошибка: ' + error.message, true);
+            });
+    }
+
+    // Отмена изменения username
+    function cancelUsernameEdit() {
+        document.getElementById('usernameEditForm').style.display = 'none';
+        document.getElementById('usernameError').textContent = '';
+    }
+
+    // Сохраняем описание
+    function saveDescription() {
+        const description = document.getElementById('descriptionInput').value;
+
+        fetch('/api/v1/users/update/description', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                description: description
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return response.text().then(text => {
+                        throw new Error(text || 'Ошибка сохранения');
+                    });
+                }
+            })
+            .then(updatedUser => {
+                currentUser = updatedUser;
+                document.getElementById('descriptionText').textContent = updatedUser.description || 'Нет описания';
+                showMessage('Описание сохранено!');
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showMessage('Ошибка: ' + error.message, true);
+            });
+    }
+
+    // Показать сообщение
+    function showMessage(text, isError = false) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = text;
+        messageDiv.style.color = isError ? 'red' : 'green';
+
+        setTimeout(() => {
+            messageDiv.textContent = '';
+        }, 5000);
+    }
+
+    // Загружаем профиль при загрузке страницы
+    document.addEventListener('DOMContentLoaded', loadProfile);
+</script>
+</body>
+</html>
