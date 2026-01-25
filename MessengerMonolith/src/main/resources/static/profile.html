@@ -2,84 +2,750 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Мой профиль</title>
+    <title>Мой профиль - Мессенджер</title>
+    <style>
+        /* Общие стили */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Шапка */
+        .header {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Основной контент */
+        .profile-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Секция аватарки */
+        .avatar-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .avatar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        .avatar-container:hover .avatar-overlay {
+            opacity: 1;
+        }
+
+        .avatar-overlay span {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .avatar-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .avatar-hint {
+            color: #6c757d;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        /* Информация профиля */
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .info-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            display: inline-block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px;
+            align-items: center;
+        }
+
+        @media (max-width: 600px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .info-value {
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-field {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .info-actions {
+            margin-left: 10px;
+        }
+
+        /* Формы редактирования */
+        .edit-form {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #dee2e6;
+            display: none;
+        }
+
+        .edit-form.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .form-error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* Сообщения */
+        .message {
+            padding: 12px 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            animation: fadeIn 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-color: #bee5eb;
+        }
+
+        /* Модальное окно для предпросмотра */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 1001;
+        }
+
+        .modal-close:hover {
+            color: #667eea;
+        }
+
+        /* Бейджи статуса */
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        .status-online {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-offline {
+            background: #f8d9d5;
+            color: #721c24;
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
 </head>
 <body>
-<h1>Мой профиль</h1>
+<div class="container">
+    <!-- Шапка -->
+    <div class="header">
+        <div class="logo">Мой профиль</div>
 
-<nav>
-    <a href="/home.html">Главная</a> |
-    <a href="/api/v1/auth/logout">Выйти</a>
-</nav>
+        <div class="nav-buttons">
+            <a href="/home.html" class="btn btn-primary">Главная</a>
+            <a href="/api/v1/auth/logout" class="btn btn-danger">Выйти</a>
+        </div>
+    </div>
 
-<hr>
+    <!-- Сообщения -->
+    <div id="message"></div>
 
-<div>
-    <h3>Информация:</h3>
-    <p>
-        <strong>Имя пользователя:</strong>
-        <span id="username"></span>
-        <button onclick="editUsername()">✏️</button>
-    </p>
-    <p><strong>Email:</strong> <span id="email"></span></p>
-    <p><strong>Описание:</strong> <span id="descriptionText"></span></p>
+    <!-- Карточка профиля -->
+    <div class="profile-card">
+        <!-- Секция аватарки -->
+        <div class="avatar-section">
+            <div class="avatar-container">
+                <img id="avatar" src="" alt="Аватар" class="avatar">
+                <div class="avatar-overlay" onclick="openPreview()">
+                    <span>Просмотр</span>
+                </div>
+            </div>
+
+            <div class="avatar-actions">
+                <div class="file-input-wrapper">
+                    <button class="btn btn-primary">
+                         Загрузить аватар
+                    </button>
+                    <input type="file" id="avatarInput" accept="image/*">
+                </div>
+
+                <button class="btn btn-danger" onclick="deleteAvatar()">
+                     Удалить
+                </button>
+            </div>
+
+            <div class="avatar-hint">
+                Максимум 5MB • JPG, PNG, GIF
+            </div>
+        </div>
+
+        <!-- Информация профиля -->
+        <div class="info-section">
+            <h3 class="info-title">Основная информация</h3>
+
+            <div class="info-grid">
+                <div class="info-label">Логин:</div>
+                <div class="info-value">
+                    <span id="login" class="login-field">Загрузка...</span>
+                    <span class="status-badge status-online">онлайн</span>
+                </div>
+
+                <div class="info-label">Имя пользователя:</div>
+                <div class="info-value">
+                    <span id="username">Загрузка...</span>
+                    <div class="info-actions">
+                        <button class="btn btn-secondary" onclick="editUsername()" style="padding: 4px 8px;">
+                             Изменить
+                        </button>
+                    </div>
+                </div>
+
+                <div class="info-label">Email:</div>
+                <div class="info-value">
+                    <span id="email">Загрузка...</span>
+                </div>
+
+                <div class="info-label">Телефон:</div>
+                <div class="info-value">
+                    <span id="phone">Загрузка...</span>
+                </div>
+
+                <div class="info-label">Описание:</div>
+                <div class="info-value">
+                    <span id="descriptionText">Нет описания</span>
+                    <div class="info-actions">
+                        <button class="btn btn-secondary" onclick="editDescription()" style="padding: 4px 8px;">
+                            Изменить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Форма изменения username -->
+        <div id="usernameEditForm" class="edit-form">
+            <h3 style="margin-top: 0;"> Изменить имя пользователя</h3>
+
+            <div class="form-group">
+                <label class="form-label">Новое имя пользователя:</label>
+                <input type="text" id="newUsernameInput" class="form-control"
+                       placeholder="Введите новое имя пользователя">
+                <div class="form-error" id="usernameError"></div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" onclick="saveUsername()">
+                    Сохранить
+                </button>
+                <button class="btn btn-secondary" onclick="cancelUsernameEdit()">
+                    Отмена
+                </button>
+            </div>
+        </div>
+
+        <!-- Форма изменения описания -->
+        <div id="descriptionEditForm" class="edit-form">
+            <h3 style="margin-top: 0;">Изменить описание профиля</h3>
+
+            <div class="form-group">
+                <label class="form-label">Описание:</label>
+                <textarea id="descriptionInput" class="form-control form-textarea"
+                          placeholder="Расскажите о себе..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" onclick="saveDescription()">
+                    💾 Сохранить
+                </button>
+                <button class="btn btn-secondary" onclick="cancelDescriptionEdit()">
+                    Отмена
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Дополнительная информация -->
+    <div class="profile-card">
+        <h3 class="info-title">Статистика профиля</h3>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                <div style="font-size: 24px; font-weight: bold; color: #667eea;" id="chatsCount">0</div>
+                <div style="font-size: 12px; color: #6c757d;">Чатов</div>
+            </div>
+
+            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                <div style="font-size: 24px; font-weight: bold; color: #667eea;" id="messagesCount">0</div>
+                <div style="font-size: 12px; color: #6c757d;">Сообщений</div>
+            </div>
+
+            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                <div style="font-size: 24px; font-weight: bold; color: #667eea;" id="friendsCount">0</div>
+                <div style="font-size: 12px; color: #6c757d;">Друзей</div>
+            </div>
+
+            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                <div style="font-size: 24px; font-weight: bold; color: #667eea;" id="daysCount">0</div>
+                <div style="font-size: 12px; color: #6c757d;">Дней с нами</div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="message"></div>
-
-<hr>
-
-<!-- Форма изменения username (изначально скрыта) -->
-<div id="usernameEditForm" style="display: none; margin-bottom: 20px;">
-    <h3>Изменить имя пользователя:</h3>
-    <input type="text" id="newUsernameInput" placeholder="Новое имя пользователя">
-    <button onclick="saveUsername()">Сохранить</button>
-    <button onclick="cancelUsernameEdit()">Отмена</button>
-    <div id="usernameError" style="color: red; margin-top: 5px;"></div>
-</div>
-
-<div>
-    <h3>Изменить описание:</h3>
-    <textarea id="descriptionInput" rows="3" cols="50" placeholder="Расскажите о себе..."></textarea><br><br>
-    <button onclick="saveDescription()">Сохранить описание</button>
+<!-- Модальное окно для предпросмотра -->
+<div id="previewModal" class="modal">
+    <span class="modal-close" onclick="closePreview()">&times;</span>
+    <img id="previewImage" class="modal-content">
 </div>
 
 <script>
     let currentUser = null;
+    let selectedFile = null;
 
     // Загружаем профиль
     function loadProfile() {
+        showMessage('Загрузка профиля...', 'info');
+
         fetch('/api/v1/users/profile')
             .then(response => {
-                if (!response.ok) throw new Error('Ошибка загрузки');
+                if (!response.ok) throw new Error('Ошибка загрузки профиля');
                 return response.json();
             })
             .then(user => {
                 currentUser = user;
                 updateProfileDisplay(user);
+                showMessage('Профиль загружен', 'success');
+                setTimeout(() => document.getElementById('message').style.display = 'none', 2000);
             })
             .catch(error => {
                 console.error('Ошибка:', error);
-                showMessage('Не удалось загрузить профиль', true);
+                showMessage('Не удалось загрузить профиль', 'error');
             });
     }
 
     // Обновляем отображение профиля
     function updateProfileDisplay(user) {
-        document.getElementById('username').textContent = user.username || 'Нет';
-        document.getElementById('email').textContent = user.email || 'Нет';
+        document.getElementById('login').textContent = user.login || 'Не указан';
+        document.getElementById('username').textContent = user.username || 'Не указано';
+        document.getElementById('email').textContent = user.email || 'Не указано';
+        document.getElementById('phone').textContent = user.phoneNumber || 'Не указано';
         document.getElementById('descriptionText').textContent = user.description || 'Нет описания';
 
         if (user.description) {
             document.getElementById('descriptionInput').value = user.description;
         }
+
+        // Устанавливаем аватарку
+        const avatar = document.getElementById('avatar');
+        if (user.avatarUrl) {
+            avatar.src = user.avatarUrl;
+        } else {
+            avatar.src = '/uploads/default-avatar.png';
+        }
+
+        // Обновляем статистику
+        updateStatistics();
     }
+
+    // ========== АВАТАРКА ==========
+
+    // Обработчик выбора файла
+    document.getElementById('avatarInput').addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            selectedFile = e.target.files[0];
+
+            // Валидация
+            if (!selectedFile.type.startsWith('image/')) {
+                showMessage('Выберите изображение (JPG, PNG, GIF)', 'error');
+                return;
+            }
+
+            if (selectedFile.size > 5 * 1024 * 1024) {
+                showMessage('Файл слишком большой (максимум 5MB)', 'error');
+                return;
+            }
+
+            // Показываем превью
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const avatar = document.getElementById('avatar');
+                avatar.src = e.target.result;
+
+                showMessage('Файл готов к загрузке. Нажмите кнопку "Загрузить"', 'info');
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+    });
+
+    // Открыть предпросмотр
+    function openPreview() {
+        const avatar = document.getElementById('avatar');
+        // Проверяем что у аватара есть src и он не пустой
+        if (avatar.src && avatar.src !== '') {
+            const modal = document.getElementById('previewModal');
+            const previewImage = document.getElementById('previewImage');
+
+            // Проверяем что элементы существуют
+            if (modal && previewImage) {
+                previewImage.src = avatar.src;
+                modal.style.display = 'block';
+            }
+        }
+    }
+
+    // Закрыть предпросмотр
+    function closePreview() {
+        document.getElementById('previewModal').style.display = 'none';
+    }
+
+    // Загрузить аватарку на сервер
+    function uploadAvatar() {
+        if (!selectedFile) {
+            showMessage('Сначала выберите файл', 'error');
+            return;
+        }
+
+        showMessage('Загрузка аватара...', 'info');
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+
+        fetch('/api/v1/users/avatar', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Ошибка загрузки');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                showMessage('Аватар успешно загружен', 'success');
+                if (data.avatarUrl) {
+                    document.getElementById('avatar').src = data.avatarUrl;
+                }
+                selectedFile = null;
+                document.getElementById('avatarInput').value = '';
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showMessage('Ошибка: ' + error.message, 'error');
+            });
+    }
+
+    // Удалить аватарку
+    function deleteAvatar() {
+        if (!confirm('Удалить аватарку? Будет установлено изображение по умолчанию.')) return;
+
+        fetch('/api/v1/users/avatar', {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Ошибка удаления');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                showMessage('Аватар удален', 'success');
+                document.getElementById('avatar').src = '/uploads/default-avatar.png';
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showMessage('Ошибка: ' + error.message, 'error');
+            });
+    }
+
+    // ========== USERNAME ==========
 
     // Показать форму изменения username
     function editUsername() {
-        document.getElementById('usernameEditForm').style.display = 'block';
+        document.getElementById('usernameEditForm').classList.add('active');
         document.getElementById('newUsernameInput').value = currentUser.username || '';
         document.getElementById('newUsernameInput').focus();
+        document.getElementById('usernameError').textContent = '';
     }
 
     // Сохранить новое имя пользователя
@@ -108,42 +774,45 @@
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                username: newUsername
-            })
+            body: JSON.stringify({ username: newUsername })
         })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => {
-                        throw new Error(text || 'Ошибка сохранения');
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Ошибка сервера');
                     });
                 }
+                return response.json();
             })
-            .then(updatedUser => {
-                currentUser = updatedUser;
-                updateProfileDisplay(updatedUser);
-                document.getElementById('usernameEditForm').style.display = 'none';
-                showMessage('Имя пользователя изменено!');
-
-                // Если поменялся username, нужно перелогиниться
-                showMessage('Имя изменено! Для применения изменений требуется перезайти.', false);
+            .then(data => {
+                currentUser = data;
+                updateProfileDisplay(data);
+                document.getElementById('usernameEditForm').classList.remove('active');
+                showMessage('Имя пользователя изменено', 'success');
             })
             .catch(error => {
                 console.error('Ошибка:', error);
-                usernameError.textContent = error.message || 'Ошибка изменения имени';
-                showMessage('Ошибка: ' + error.message, true);
+                usernameError.textContent = error.message;
+                showMessage('Ошибка: ' + error.message, 'error');
             });
     }
 
     // Отмена изменения username
     function cancelUsernameEdit() {
-        document.getElementById('usernameEditForm').style.display = 'none';
+        document.getElementById('usernameEditForm').classList.remove('active');
         document.getElementById('usernameError').textContent = '';
     }
 
-    // Сохраняем описание
+    // ========== ОПИСАНИЕ ==========
+
+    // Показать форму изменения описания
+    function editDescription() {
+        document.getElementById('descriptionEditForm').classList.add('active');
+        document.getElementById('descriptionInput').value = currentUser.description || '';
+        document.getElementById('descriptionInput').focus();
+    }
+
+    // Сохранить описание
     function saveDescription() {
         const description = document.getElementById('descriptionInput').value;
 
@@ -152,40 +821,70 @@
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                description: description
-            })
+            body: JSON.stringify({ description: description })
         })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    return response.text().then(text => {
-                        throw new Error(text || 'Ошибка сохранения');
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Ошибка сохранения');
                     });
                 }
+                return response.json();
             })
             .then(updatedUser => {
                 currentUser = updatedUser;
                 document.getElementById('descriptionText').textContent = updatedUser.description || 'Нет описания';
-                showMessage('Описание сохранено!');
+                document.getElementById('descriptionEditForm').classList.remove('active');
+                showMessage('Описание сохранено', 'success');
             })
             .catch(error => {
                 console.error('Ошибка:', error);
-                showMessage('Ошибка: ' + error.message, true);
+                showMessage('Ошибка: ' + error.message, 'error');
             });
     }
 
+    // Отмена изменения описания
+    function cancelDescriptionEdit() {
+        document.getElementById('descriptionEditForm').classList.remove('active');
+    }
+
+    // ========== ВСПОМОГАТЕЛЬНЫЕ ==========
+
     // Показать сообщение
-    function showMessage(text, isError = false) {
+    function showMessage(text, type = 'info') {
         const messageDiv = document.getElementById('message');
         messageDiv.textContent = text;
-        messageDiv.style.color = isError ? 'red' : 'green';
+        messageDiv.className = `message ${type}`;
+        messageDiv.style.display = 'block';
 
-        setTimeout(() => {
-            messageDiv.textContent = '';
-        }, 5000);
+        // Добавляем кнопку загрузки если это info о файле
+        if (type === 'info' && selectedFile) {
+            messageDiv.innerHTML = text +
+                ' <button class="btn btn-primary" onclick="uploadAvatar()" style="margin-left: 10px; padding: 5px 10px; font-size: 12px;">Загрузить</button>';
+        }
+
+        if (type !== 'info') {
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
     }
+
+    // Обновляем статистику (заглушка)
+    function updateStatistics() {
+        document.getElementById('chatsCount').textContent = '5';
+        document.getElementById('messagesCount').textContent = '127';
+        document.getElementById('friendsCount').textContent = '23';
+        document.getElementById('daysCount').textContent = Math.floor(Math.random() * 100) + 1;
+    }
+
+    // Закрыть модальное окно по клику вне картинки
+    window.onclick = function(event) {
+        const modal = document.getElementById('previewModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
 
     // Загружаем профиль при загрузке страницы
     document.addEventListener('DOMContentLoaded', loadProfile);

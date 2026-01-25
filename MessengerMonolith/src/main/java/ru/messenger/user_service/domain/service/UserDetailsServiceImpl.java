@@ -16,16 +16,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
         // Ищем пользователя по username
-        UserEntity user = userRepository.findByUsername(username)
+        UserEntity user = userRepository.findByIdentifier(identifier)
                 .orElseThrow(() -> new UsernameNotFoundException(
-                        "Пользователь '" + username + "' не найден"
+                        "Неверный логин/телефон/email или пароль"
                 ));
 
         // Создаем UserDetails из найденного пользователя
         return User.builder()
-                .username(user.getUsername()) // username для Spring Security
+                .username(user.getLogin()) // username для Spring Security
                 .password(user.getPassword()) // уже закодированный пароль
                 .roles("USER") // роль пользователя
                 .build();

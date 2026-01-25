@@ -45,8 +45,10 @@ public class UserController {
      */
     @GetMapping("/profile")
     public ResponseEntity<UserResponseDto> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
-        String username = userDetails.getUsername();
-        UserResponseDto user = userService.getUserByUsername(username);
+        String login = userDetails.getUsername(); // ← это login, а не username!
+        log.info("Запрос профиля для пользователя с логином: {}", login);
+
+        UserResponseDto user = userService.getUserByLogin(login);
         return ResponseEntity.ok(user);
     }
 
@@ -59,43 +61,24 @@ public class UserController {
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestBody @Valid DescriptionUpdateDto descriptionDto) {
 
-        String username = userDetails.getUsername();
-        UserResponseDto updated = userService.updateUserDescription(username, descriptionDto.getDescription());
+        String login = userDetails.getUsername();
+
+        UserResponseDto updated = userService.updateUserDescription(login, descriptionDto.getDescription());
         return ResponseEntity.ok(updated);
     }
     /**
      * Обновление иsername профиля
      * PATCH /api/v1/users/update/username
      */
-    @PatchMapping("/update/username")
-    public ResponseEntity<Map<String, String>> updateUsername(
+    @PatchMapping("/update/username")  // или "/username" если у тебя такой путь
+    public ResponseEntity<UserResponseDto> updateUsername(
             @AuthenticationPrincipal UserDetails userDetails,
-            Authentication authentication,
-            @RequestBody @Valid UsernameUpdateDto usernameDto,
-            HttpServletRequest request,
-            HttpServletResponse response) {
+            @RequestBody @Valid UsernameUpdateDto usernameDto) {
 
-        String currentUsername = userDetails.getUsername();
+        String login = userDetails.getUsername(); // ← это login!
+        log.info("Изменение username для login={}, новое username={}", login, usernameDto.getUsername());
 
-        try {
-            UserResponseDto updatedUser = userService.updateUserUsername(
-                    currentUsername,
-                    usernameDto.getUsername()
-            );
-
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
-
-            return ResponseEntity.ok(Map.of(
-                    "message", "Имя пользователя изменено на: " + updatedUser.getUsername(),
-                    "newUsername", updatedUser.getUsername(),
-                    "action", "logout"
-            ));
-
-        } catch (Exception e) {
-            log.error("Ошибка при изменении username: ", e);
-            return ResponseEntity.badRequest().body(Map.of(
-                    "error", e.getMessage()
-            ));
-        }
+        UserResponseDto updated = userService.updateUsername(login, usernameDto.getUsername());
+        return ResponseEntity.ok(updated);
     }
 }

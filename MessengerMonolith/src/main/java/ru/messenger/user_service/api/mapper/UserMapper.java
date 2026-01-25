@@ -9,9 +9,13 @@ import ru.messenger.user_service.domain.entity.UserEntity;
 public interface UserMapper {
 
     // Entity в ResponseDto
+    @Mapping(source = "avatarUrl", target = "avatarUrl")
+    @Mapping(source = "login", target = "login")
     UserResponseDto toResponseDto(UserEntity entity);
 
     // RequestDto в Entity (при создании)
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "avatarUrl", ignore = true)
+    @Mapping(target = "password", ignore = true)
     UserEntity toEntity(UserRequestDto requestDto);
 }

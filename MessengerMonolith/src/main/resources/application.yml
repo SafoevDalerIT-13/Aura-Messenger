@@ -2,6 +2,7 @@ spring:
   application:
     name: user-service
 
+#Для postgresSQL
   datasource:
     url: jdbc:postgresql://localhost/aura_messenger
     username: postgres
@@ -13,7 +14,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop #для dev
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
@@ -22,6 +23,27 @@ spring:
           batch_size: 20
         order_inserts: true
         order_updates: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+# Настройки загрузки файлов
+file:
+  upload-dir: uploads
+
+# Логирование
+logging:
+  level:
+    ru.messenger: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 server:
   port: 8080
+  servlet:
+    context-path: /

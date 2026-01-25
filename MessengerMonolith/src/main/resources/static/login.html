@@ -4,12 +4,35 @@
     <meta charset="UTF-8">
     <title>Вход</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
         .error {
             color: red;
             background: #ffe6e6;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid red;
+            border-radius: 4px;
+            text-align: center;
             display: none;
         }
         .success {
@@ -18,62 +41,148 @@
             padding: 10px;
             margin: 10px 0;
             border: 1px solid green;
+            border-radius: 4px;
+            text-align: center;
             display: none;
+        }
+        .info {
+            color: #666;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .login-hint {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border: 1px solid #dee2e6;
+            font-size: 14px;
+        }
+        .login-hint strong {
+            display: block;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
 <h2>Вход в мессенджер</h2>
 
-<!-- Если есть параметр error в URL -->
-<div class="error" id="errorMessage" style="display: none;">
-    Неверное имя пользователя или пароль
+<div class="error" id="errorMessage"></div>
+<div class="success" id="successMessage"></div>
+
+<div class="login-hint">
+    <strong>Можно войти с помощью:</strong>
+    <div>• Логина (example123)</div>
+    <div>• Номера телефона (+79991234567)</div>
+    <div>• Email (если указан при регистрации)</div>
 </div>
 
-<!-- Если есть параметр logout в URL -->
-<div class="success" id="logoutMessage" style="display: none;">
-    Вы успешно вышли из системы
-</div>
-
-<!-- СТАНДАРТНАЯ форма (без AJAX) -->
-<form action="/api/v1/auth/login" method="post">
-    <div>
-        <label>Имя пользователя:</label><br>
-        <input type="text" name="username" required>
+<form method="POST" action="/api/v1/auth/login">
+    <div class="form-group">
+        <label>Логин, телефон или email:</label>
+        <input type="text" name="username" required
+               placeholder="Введите логин, телефон или email"
+               id="identifier">
+        <div class="info">Введите любой из указанных при регистрации данных</div>
     </div>
-    <br>
-    <div>
-        <label>Пароль:</label><br>
+
+    <div class="form-group">
+        <label>Пароль:</label>
         <input type="password" name="password" required>
     </div>
-    <br>
+
     <button type="submit">Войти</button>
 </form>
 
-<p>Нет аккаунта? <a href="/auth.html">Зарегистрироваться</a></p>
+<p style="text-align: center; margin-top: 20px;">
+    Нет аккаунта? <a href="/auth.html">Зарегистрироваться</a>
+</p>
 
 <script>
-    // Показываем сообщения при загрузке страницы
     document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
 
+        // Обработка ошибок
         if (urlParams.has('error')) {
-            document.getElementById('errorMessage').style.display = 'block';
-            // Убираем параметр из URL чтобы при обновлении не показывалось
+            showError('Неверный логин/телефон/email или пароль');
             window.history.replaceState({}, '', '/login.html');
         }
 
+        // Обработка успешного выхода
         if (urlParams.has('logout')) {
-            document.getElementById('logoutMessage').style.display = 'block';
+            showSuccess('Вы успешно вышли из системы');
             window.history.replaceState({}, '', '/login.html');
         }
 
-        // Скрываем сообщения через 5 секунд
-        setTimeout(function() {
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('logoutMessage').style.display = 'none';
-        }, 5000);
+        // Обработка успешной регистрации
+        if (urlParams.has('registered')) {
+            showSuccess('Регистрация успешна! Теперь войдите в систему.');
+            window.history.replaceState({}, '', '/login.html');
+        }
+
+        // Автоматическая маска для телефона
+        const identifierInput = document.getElementById('identifier');
+
+        identifierInput.addEventListener('input', function(e) {
+            let value = e.target.value;
+
+            // Если ввод похож на телефон
+            if (/^[\d+]/.test(value)) {
+                let cleaned = value.replace(/\D/g, '');
+
+                if (cleaned.length > 0) {
+                    if (cleaned.startsWith('8')) {
+                        cleaned = '7' + cleaned.substring(1);
+                    }
+                    if (!cleaned.startsWith('7')) {
+                        cleaned = '7' + cleaned;
+                    }
+                    e.target.value = '+' + cleaned;
+
+                    // Ограничение длины
+                    if (cleaned.length > 11) {
+                        e.target.value = '+' + cleaned.substring(0, 11);
+                    }
+                }
+            }
+        });
+
+        // Автофокус на поле ввода
+        identifierInput.focus();
     });
+
+    function showError(message) {
+        const errorDiv = document.getElementById('errorMessage');
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 5000);
+    }
+
+    function showSuccess(message) {
+        const successDiv = document.getElementById('successMessage');
+        successDiv.textContent = message;
+        successDiv.style.display = 'block';
+
+        setTimeout(() => {
+            successDiv.style.display = 'none';
+        }, 5000);
+    }
 </script>
 </body>
 </html>

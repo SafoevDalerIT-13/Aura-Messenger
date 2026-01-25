@@ -25,7 +25,8 @@ public class SecurityConfig {
                                 "/auth.html",
                                 "/login.html",
                                 "/api/v1/users/auth",
-                                "/error"
+                                "/error",
+                                "/uploads/**"
                         ).permitAll()
 
                         // ВСЁ остальное требует аутентификации

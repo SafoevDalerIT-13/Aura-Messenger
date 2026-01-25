@@ -11,6 +11,11 @@ import lombok.Data;
 @Builder
 public class UserRequestDto {
 
+    @NotBlank(message = "Логин обязателен")
+    @Size(min = 3, max = 50, message = "Логин должен быть от 3 до 50 символов")
+    @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Логин может содержать только латиницу, цифры и подчеркивание")
+    private String login;
+
     @Size(min = 3,max = 50)
     @NotBlank(message = "Имя пользователя обязательно")
     private String username;
@@ -28,6 +33,15 @@ public class UserRequestDto {
 
     @Size(max = 500, message = "Описание не должно превышать 500 символов")
     private String description;
+
+    @NotBlank(message = "Номер телефона обязателен")
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$", message = "Некорректный формат номера телефона")
+    private String phoneNumber;
+
+    public boolean isValid() {
+        return (email != null && !email.trim().isEmpty()) ||
+                (phoneNumber != null && !phoneNumber.trim().isEmpty());
+    }
 
 
 }

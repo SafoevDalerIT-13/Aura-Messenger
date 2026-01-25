@@ -18,10 +18,13 @@ public class UserEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "login", unique = true, nullable = false)
+    private String login;
+
+    @Column(name = "username",nullable = false)
     private String username;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -29,4 +32,17 @@ public class UserEntity {
 
     @Column(name = "description",length = 500)
     private String description;
+
+    @Column(name = "avatar_url", length = 500)
+    private String avatarUrl;
+
+    @Column(name = "phone_number", unique = true, length = 20)
+    private String phoneNumber;
+
+
+    public boolean hasContactInfo() {
+        return email != null || phoneNumber != null;
+    }
+
+
 }
