@@ -11,6 +11,8 @@ import lombok.Data;
 @Builder
 public class UserResponseDto {
 
+    private Long id;
+
     @Size(min = 3,max = 50,message = "Логин должен быть от 3 до 50 символов")
     @NotBlank(message = "Логин пользователя обязательно")
     private String login;

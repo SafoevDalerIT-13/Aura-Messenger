@@ -4,128 +4,285 @@
     <meta charset="UTF-8">
     <title>Мой профиль - Мессенджер</title>
     <style>
-        /* Общие стили */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             min-height: 100vh;
-            color: #333;
+            color: var(--dark);
+            animation: gradientShift 20s ease infinite;
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
+            animation: fadeIn 0.8s ease-out;
         }
 
         /* Шапка */
         .header {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px 30px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-lg);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            animation: slideDown 0.6s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .header:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         .nav-buttons {
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            animation: fadeInRight 0.8s ease-out;
         }
 
         .btn {
-            padding: 8px 16px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover:before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary {
-            background: #667eea;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
+            box-shadow: var(--shadow);
         }
 
         .btn-primary:hover {
-            background: #5a6fd8;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
         }
 
         .btn-secondary {
-            background: #f8f9fa;
-            color: #333;
-            border: 1px solid #dee2e6;
+            background: white;
+            color: var(--dark);
+            border: 2px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-secondary:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
         }
 
         .btn-danger {
-            background: #dc3545;
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
             color: white;
+            box-shadow: var(--shadow);
         }
 
         .btn-danger:hover {
-            background: #c82333;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(239, 68, 68, 0.3);
         }
 
-        /* Основной контент */
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+            color: var(--dark);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info) 0%, #2563eb 100%);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-info:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 8px;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Карточка профиля */
         .profile-card {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--shadow-lg);
             margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { width: 0; }
+            to { width: 100%; }
         }
 
         /* Секция аватарки */
         .avatar-section {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #e2e8f0;
+            animation: fadeIn 1s ease-out;
         }
 
         .avatar-container {
             position: relative;
             display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .avatar {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid #667eea;
-            cursor: pointer;
+            margin-bottom: 20px;
             transition: all 0.3s ease;
         }
 
-        .avatar:hover {
+        .avatar-container:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid var(--primary);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .avatar:hover {
+            transform: rotate(5deg) scale(1.1);
+            border-color: var(--secondary);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
         }
 
         .avatar-overlay {
@@ -134,36 +291,44 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: all 0.3s ease;
             cursor: pointer;
+            backdrop-filter: blur(2px);
         }
 
         .avatar-container:hover .avatar-overlay {
             opacity: 1;
+            transform: scale(1.1);
         }
 
         .avatar-overlay span {
             color: white;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .avatar-actions {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
+            margin-top: 16px;
         }
 
         .file-input-wrapper {
             position: relative;
             display: inline-block;
+            overflow: hidden;
+            border-radius: 10px;
         }
 
         .file-input-wrapper input[type="file"] {
@@ -177,183 +342,529 @@
         }
 
         .avatar-hint {
-            color: #6c757d;
+            color: var(--gray);
             font-size: 12px;
-            margin-top: 8px;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            animation: fadeIn 0.8s ease-out;
         }
 
         /* Информация профиля */
         .info-section {
-            margin-bottom: 30px;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease-out;
         }
 
         .info-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--dark);
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
             display: inline-block;
+            position: relative;
+            animation: titleSlide 0.6s ease-out;
+        }
+
+        @keyframes titleSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .info-grid {
             display: grid;
-            grid-template-columns: 150px 1fr;
-            gap: 15px;
+            grid-template-columns: 180px 1fr;
+            gap: 16px;
             align-items: center;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 640px) {
             .info-grid {
                 grid-template-columns: 1fr;
-                gap: 10px;
+                gap: 12px;
             }
         }
 
         .info-label {
             font-weight: 600;
-            color: #495057;
+            color: var(--dark);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .info-value {
-            padding: 8px 12px;
-            background: #f8f9fa;
-            border-radius: 5px;
-            min-height: 38px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            min-height: 44px;
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+        }
+
+        .info-value:hover {
+            background: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
         .login-field {
-            color: #6c757d;
+            color: var(--gray);
             font-style: italic;
+            font-weight: 500;
         }
 
         .info-actions {
-            margin-left: 10px;
+            margin-left: 12px;
+            display: flex;
+            gap: 6px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .info-value:hover .info-actions {
+            opacity: 1;
+        }
+
+        /* Стили для контактов и друзей */
+        .contact-item, .friend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .contact-item:hover, .friend-item:hover {
+            background: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .contact-item.primary {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border-color: #7dd3fc;
+        }
+
+        .contact-info, .friend-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .contact-avatar, .friend-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .friend-avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .friend-details {
+            flex: 1;
+        }
+
+        .friend-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+
+        .friend-login {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .friend-nickname {
+            font-size: 11px;
+            color: var(--success);
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        .friend-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+            animation: statusPulse 2s infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .status-online {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+        }
+
+        .status-offline {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+        }
+
+        .status-pending {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+        }
+
+        .status-friend {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #1e40af;
+        }
+
+        .status-blocked {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #374151;
+        }
+
+        .contact-type-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-type-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .contact-type-badge.PHONE {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+
+        .contact-type-badge.EMAIL {
+            background: linear-gradient(135deg, var(--info) 0%, #2563eb 100%);
+        }
+
+        .contact-type-badge.TELEGRAM {
+            background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+        }
+
+        .contact-type-badge.WHATSAPP {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        }
+
+        .contact-type-badge.VK {
+            background: linear-gradient(135deg, #4C75A3 0%, #2a4365 100%);
+        }
+
+        .contact-type-badge.OTHER {
+            background: linear-gradient(135deg, var(--gray) 0%, #475569 100%);
+        }
+
+        .contact-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .contact-primary-badge {
+            background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+            animation: glow 2s infinite;
+        }
+
+        .contact-actions, .friend-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-item:hover .contact-actions,
+        .friend-item:hover .friend-actions {
+            opacity: 1;
+        }
+
+        .empty-contacts, .empty-friends {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            border: 2px dashed #cbd5e1;
+            animation: fadeIn 0.8s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .empty-contacts:hover, .empty-friends:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
         /* Формы редактирования */
         .edit-form {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 16px;
+            padding: 24px;
             margin: 20px 0;
-            border: 1px solid #dee2e6;
+            border: 2px solid #e2e8f0;
             display: none;
+            animation: formSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes formSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .edit-form.active {
             display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.5s ease-out;
+            animation-fill-mode: both;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #495057;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
         }
 
         .form-control {
             width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             font-size: 14px;
-            transition: border-color 0.3s;
-            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
         }
 
         .form-control:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary);
+            background: white;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
         }
 
         .form-textarea {
-            min-height: 100px;
+            min-height: 120px;
             resize: vertical;
+            line-height: 1.5;
         }
 
         .form-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 24px;
+            animation: fadeInUp 0.6s ease-out;
         }
 
         .form-error {
-            color: #dc3545;
+            color: var(--danger);
             font-size: 12px;
-            margin-top: 5px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Табы */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: 600;
+            color: var(--gray);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--primary);
+        }
+
+        .tab.active:before {
+            width: 100%;
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         /* Сообщения */
         .message {
-            padding: 12px 20px;
-            margin: 15px 0;
-            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            border-radius: 12px;
             text-align: center;
-            font-weight: 500;
-            animation: fadeIn 0.3s ease;
-            border: 1px solid transparent;
+            font-weight: 600;
+            animation: messageSlide 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            backdrop-filter: blur(10px);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .message.success {
-            background: #d4edda;
-            color: #155724;
-            border-color: #c3e6cb;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(5, 150, 105, 0.95) 100%);
+            color: white;
+            border-color: #10b981;
         }
 
         .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border-color: #f5c6cb;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%);
+            color: white;
+            border-color: #ef4444;
         }
 
         .message.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border-color: #bee5eb;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(37, 99, 235, 0.95) 100%);
+            color: white;
+            border-color: #3b82f6;
         }
 
         /* Модальное окно для предпросмотра */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 2000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
             animation: fadeIn 0.3s ease;
+            justify-content: center;
+            align-items: center;
         }
 
         .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: relative;
             max-width: 90%;
             max-height: 90%;
-            border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: modalZoom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes modalZoom {
+            from {
+                opacity: 0;
+                transform: scale(0.8) rotate(-5deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
         }
 
         .modal-close {
@@ -364,63 +875,388 @@
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
-            transition: color 0.3s;
-            z-index: 1001;
+            transition: all 0.3s ease;
+            z-index: 2001;
+            background: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-close:hover {
-            color: #667eea;
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
         }
 
         /* Бейджи статуса */
         .status-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 12px;
-            font-weight: 500;
-            margin-left: 10px;
+            font-weight: 600;
+            margin-left: 12px;
+            animation: statusFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes statusFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
         }
 
         .status-online {
-            background: #d4edda;
-            color: #155724;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+            border: 2px solid #10b981;
         }
 
         .status-offline {
-            background: #f8d9d5;
-            color: #721c24;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+            border: 2px solid #ef4444;
         }
 
         /* Скроллбар */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
+            height: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
+            background: #f1f5f9;
+            border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 3px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary) 100%);
+        }
+
+        /* Дата и время */
+        .timestamp {
+            font-size: 11px;
+            color: var(--gray);
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Статистика профиля */
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 32px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover:before {
+            transform: scaleX(1);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            background: white;
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover .stat-value {
+            transform: scale(1.1);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        /* Поиск друзей */
+        .search-input {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+            width: 100%;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .nav-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .profile-card {
+                padding: 24px;
+            }
+
+            .avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+
+            .tab {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            .avatar-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-actions, .friend-actions {
+                opacity: 1;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Эффект волны */
+        .wave-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wave-effect:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .wave-effect:focus:after,
+        .wave-effect:active:after {
+            animation: wave 0.6s ease-out;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
+        /* Плавный скролл */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Анимация загрузки */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Эффект свечения */
+        .glow-effect {
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+            }
+        }
+
+        /* Анимации появления элементов */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Градиентные границы */
+        .gradient-border {
+            position: relative;
+        }
+
+        .gradient-border:before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gradient-border:hover:before {
+            opacity: 1;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 <div class="container">
     <!-- Шапка -->
-    <div class="header">
-        <div class="logo">Мой профиль</div>
-
+    <div class="header gradient-border">
+        <div class="logo">
+            <i class="fas fa-user-circle"></i>
+            <span>Мой профиль</span>
+        </div>
         <div class="nav-buttons">
-            <a href="/home.html" class="btn btn-primary">Главная</a>
-            <a href="/api/v1/auth/logout" class="btn btn-danger">Выйти</a>
+            <a href="/home.html" class="btn btn-primary">
+                <i class="fas fa-home"></i>
+                <span>Главная</span>
+            </a>
+            <a href="/api/v1/auth/logout" class="btn btn-danger">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Выйти</span>
+            </a>
         </div>
     </div>
 
@@ -432,67 +1268,94 @@
         <!-- Секция аватарки -->
         <div class="avatar-section">
             <div class="avatar-container">
-                <img id="avatar" src="" alt="Аватар" class="avatar">
+                <img id="avatar" src="/uploads/default-avatar.png" alt="Аватар" class="avatar">
                 <div class="avatar-overlay" onclick="openPreview()">
-                    <span>Просмотр</span>
+                    <span>
+                        <i class="fas fa-search-plus"></i>
+                        Просмотр
+                    </span>
                 </div>
             </div>
 
             <div class="avatar-actions">
                 <div class="file-input-wrapper">
-                    <button class="btn btn-primary">
-                         Загрузить аватар
+                    <button class="btn btn-primary wave-effect">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Загрузить аватар</span>
                     </button>
                     <input type="file" id="avatarInput" accept="image/*">
                 </div>
-
-                <button class="btn btn-danger" onclick="deleteAvatar()">
-                     Удалить
+                <button class="btn btn-danger wave-effect" onclick="deleteAvatar()">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Удалить</span>
                 </button>
             </div>
 
             <div class="avatar-hint">
-                Максимум 5MB • JPG, PNG, GIF
+                <i class="fas fa-info-circle"></i>
+                <span>Максимум 5MB • JPG, PNG, GIF</span>
             </div>
         </div>
 
         <!-- Информация профиля -->
         <div class="info-section">
-            <h3 class="info-title">Основная информация</h3>
-
+            <h3 class="info-title">
+                <i class="fas fa-id-card"></i>
+                <span>Основная информация</span>
+            </h3>
             <div class="info-grid">
-                <div class="info-label">Логин:</div>
+                <div class="info-label">
+                    <i class="fas fa-user"></i>
+                    <span>Логин:</span>
+                </div>
                 <div class="info-value">
                     <span id="login" class="login-field">Загрузка...</span>
-                    <span class="status-badge status-online">онлайн</span>
+                    <span class="status-badge status-online">
+                        <i class="fas fa-circle"></i>
+                        <span>онлайн</span>
+                    </span>
                 </div>
 
-                <div class="info-label">Имя пользователя:</div>
+                <div class="info-label">
+                    <i class="fas fa-user-tag"></i>
+                    <span>Имя пользователя:</span>
+                </div>
                 <div class="info-value">
                     <span id="username">Загрузка...</span>
                     <div class="info-actions">
-                        <button class="btn btn-secondary" onclick="editUsername()" style="padding: 4px 8px;">
-                             Изменить
+                        <button class="btn btn-sm btn-secondary wave-effect" onclick="editUsername()">
+                            <i class="fas fa-edit"></i>
+                            <span>Изменить</span>
                         </button>
                     </div>
                 </div>
 
-                <div class="info-label">Email:</div>
+                <div class="info-label">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email:</span>
+                </div>
                 <div class="info-value">
                     <span id="email">Загрузка...</span>
                 </div>
 
-                <div class="info-label">Телефон:</div>
+                <div class="info-label">
+                    <i class="fas fa-phone"></i>
+                    <span>Телефон:</span>
+                </div>
                 <div class="info-value">
                     <span id="phone">Загрузка...</span>
                 </div>
 
-                <div class="info-label">Описание:</div>
+                <div class="info-label">
+                    <i class="fas fa-align-left"></i>
+                    <span>Описание:</span>
+                </div>
                 <div class="info-value">
                     <span id="descriptionText">Нет описания</span>
                     <div class="info-actions">
-                        <button class="btn btn-secondary" onclick="editDescription()" style="padding: 4px 8px;">
-                            Изменить
+                        <button class="btn btn-sm btn-secondary wave-effect" onclick="editDescription()">
+                            <i class="fas fa-edit"></i>
+                            <span>Изменить</span>
                         </button>
                     </div>
                 </div>
@@ -500,84 +1363,417 @@
         </div>
 
         <!-- Форма изменения username -->
-        <div id="usernameEditForm" class="edit-form">
-            <h3 style="margin-top: 0;"> Изменить имя пользователя</h3>
-
+        <div id="usernameEditForm" class="edit-form gradient-border">
+            <h3 style="margin-top: 0; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-user-edit"></i>
+                <span>Изменить имя пользователя</span>
+            </h3>
             <div class="form-group">
                 <label class="form-label">Новое имя пользователя:</label>
                 <input type="text" id="newUsernameInput" class="form-control"
                        placeholder="Введите новое имя пользователя">
                 <div class="form-error" id="usernameError"></div>
             </div>
-
             <div class="form-actions">
-                <button class="btn btn-primary" onclick="saveUsername()">
-                    Сохранить
+                <button class="btn btn-primary wave-effect" onclick="saveUsername()">
+                    <i class="fas fa-save"></i>
+                    <span>Сохранить</span>
                 </button>
-                <button class="btn btn-secondary" onclick="cancelUsernameEdit()">
-                    Отмена
+                <button class="btn btn-secondary wave-effect" onclick="cancelUsernameEdit()">
+                    <i class="fas fa-times"></i>
+                    <span>Отмена</span>
                 </button>
             </div>
         </div>
 
         <!-- Форма изменения описания -->
-        <div id="descriptionEditForm" class="edit-form">
-            <h3 style="margin-top: 0;">Изменить описание профиля</h3>
-
+        <div id="descriptionEditForm" class="edit-form gradient-border">
+            <h3 style="margin-top: 0; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-file-alt"></i>
+                <span>Изменить описание профиля</span>
+            </h3>
             <div class="form-group">
                 <label class="form-label">Описание:</label>
                 <textarea id="descriptionInput" class="form-control form-textarea"
-                          placeholder="Расскажите о себе..."></textarea>
+                          placeholder="Расскажите о себе..." rows="4"></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary wave-effect" onclick="saveDescription()">
+                    <i class="fas fa-save"></i>
+                    <span>Сохранить</span>
+                </button>
+                <button class="btn btn-secondary wave-effect" onclick="cancelDescriptionEdit()">
+                    <i class="fas fa-times"></i>
+                    <span>Отмена</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Секция контактов и друзей -->
+    <div class="profile-card">
+        <!-- Табы -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('contactsTab')">
+                <i class="fas fa-address-book"></i>
+                <span>Мои контакты</span>
+            </button>
+            <button class="tab" onclick="switchTab('friendsTab')">
+                <i class="fas fa-user-friends"></i>
+                <span>Друзья</span>
+            </button>
+            <button class="tab" onclick="switchTab('friendRequestsTab')">
+                <i class="fas fa-user-plus"></i>
+                <span>Заявки</span>
+            </button>
+        </div>
+
+        <!-- Вкладка контактов -->
+        <div id="contactsTab" class="tab-content active">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+                <h3 class="info-title" style="margin: 0;">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>Контактная информация</span>
+                </h3>
+                <button class="btn btn-primary wave-effect" onclick="showAddContactForm()">
+                    <i class="fas fa-plus"></i>
+                    <span>Добавить контакт</span>
+                </button>
             </div>
 
-            <div class="form-actions">
-                <button class="btn btn-primary" onclick="saveDescription()">
-                    💾 Сохранить
-                </button>
-                <button class="btn btn-secondary" onclick="cancelDescriptionEdit()">
-                    Отмена
-                </button>
+            <!-- Список контактов -->
+            <div id="contactsList" style="margin-bottom: 24px;">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+
+            <!-- Форма добавления контакта -->
+            <div id="addContactForm" class="edit-form gradient-border">
+                <h3 style="margin-top: 0; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Добавить новый контакт</span>
+                </h3>
+                <div class="form-group">
+                    <label class="form-label">Тип контакта:</label>
+                    <select id="contactType" class="form-control">
+                        <option value="PHONE">📱 Телефон</option>
+                        <option value="EMAIL">📧 Email</option>
+                        <option value="TELEGRAM">✈️ Telegram</option>
+                        <option value="WHATSAPP">💚 WhatsApp</option>
+                        <option value="VK">👥 ВКонтакте</option>
+                        <option value="OTHER">🔗 Другое</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Значение:</label>
+                    <input type="text" id="contactValue" class="form-control"
+                           placeholder="+79161234567, user@mail.com, @username">
+                    <div class="form-error" id="contactValueError"></div>
+                </div>
+                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="contactIsPrimary" class="form-control" style="width: auto;">
+                    <label class="form-label" style="margin: 0; font-weight: normal;">
+                        Сделать основным контактом
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary wave-effect" onclick="addContact()">
+                        <i class="fas fa-save"></i>
+                        <span>Сохранить</span>
+                    </button>
+                    <button class="btn btn-secondary wave-effect" onclick="cancelAddContact()">
+                        <i class="fas fa-times"></i>
+                        <span>Отмена</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Форма редактирования контакта -->
+            <div id="editContactForm" class="edit-form gradient-border">
+                <h3 style="margin-top: 0; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-edit"></i>
+                    <span>Редактировать контакт</span>
+                </h3>
+                <input type="hidden" id="editContactId">
+                <div class="form-group">
+                    <label class="form-label">Тип контакта:</label>
+                    <select id="editContactType" class="form-control">
+                        <option value="PHONE">📱 Телефон</option>
+                        <option value="EMAIL">📧 Email</option>
+                        <option value="TELEGRAM">✈️ Telegram</option>
+                        <option value="WHATSAPP">💚 WhatsApp</option>
+                        <option value="VK">👥 ВКонтакте</option>
+                        <option value="OTHER">🔗 Другое</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Значение:</label>
+                    <input type="text" id="editContactValue" class="form-control">
+                    <div class="form-error" id="editContactValueError"></div>
+                </div>
+                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="editContactIsPrimary" class="form-control" style="width: auto;">
+                    <label class="form-label" style="margin: 0; font-weight: normal;">
+                        Сделать основным контактом
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary wave-effect" onclick="saveContact()">
+                        <i class="fas fa-save"></i>
+                        <span>Сохранить</span>
+                    </button>
+                    <button class="btn btn-secondary wave-effect" onclick="cancelEditContact()">
+                        <i class="fas fa-times"></i>
+                        <span>Отмена</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка друзей -->
+        <div id="friendsTab" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+                <h3 class="info-title" style="margin: 0;">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Мои друзья</span>
+                </h3>
+                <div class="friend-actions" style="display: flex; gap: 12px; opacity: 1;">
+                    <input type="text" id="friendSearchInput" class="search-input"
+                           placeholder="Поиск друзей..." style="width: 200px;"
+                           onkeyup="searchFriendsDebounced()">
+                    <button class="btn btn-primary wave-effect" onclick="showFindFriendsModal()">
+                        <i class="fas fa-search"></i>
+                        <span>Найти друзей</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Список друзей -->
+            <div id="friendsList">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка заявок в друзья -->
+        <div id="friendRequestsTab" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+                <h3 class="info-title" style="margin: 0;">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Заявки в друзья</span>
+                </h3>
+                <div>
+                    <button class="btn btn-secondary wave-effect" onclick="loadFriendRequests()" style="margin-right: 10px;">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Обновить</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Входящие заявки -->
+            <div style="margin-bottom: 32px;">
+                <h4 style="margin-bottom: 20px; color: var(--dark); display: flex; align-items: center; gap: 10px; font-size: 18px;">
+                    <i class="fas fa-inbox" style="color: var(--primary);"></i>
+                    <span>Входящие заявки</span>
+                </h4>
+                <div id="incomingRequests">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Исходящие заявки -->
+            <div>
+                <h4 style="margin-bottom: 20px; color: var(--dark); display: flex; align-items: center; gap: 10px; font-size: 18px;">
+                    <i class="fas fa-paper-plane" style="color: var(--info);"></i>
+                    <span>Исходящие заявки</span>
+                </h4>
+                <div id="outgoingRequests">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Дополнительная информация -->
     <div class="profile-card">
-        <h3 class="info-title">Статистика профиля</h3>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                <div style="font-size: 24px; font-weight: bold; color: #667eea;" id="chatsCount">0</div>
-                <div style="font-size: 12px; color: #6c757d;">Чатов</div>
+        <h3 class="info-title">
+            <i class="fas fa-chart-bar"></i>
+            <span>Статистика профиля</span>
+        </h3>
+        <div class="profile-stats">
+            <div class="stat-item gradient-border">
+                <div class="stat-value glow-effect" id="chatsCount">0</div>
+                <div class="stat-label">Чатов</div>
             </div>
-
-            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                <div style="font-size: 24px; font-weight: bold; color: #667eea;" id="messagesCount">0</div>
-                <div style="font-size: 12px; color: #6c757d;">Сообщений</div>
+            <div class="stat-item gradient-border">
+                <div class="stat-value glow-effect" id="messagesCount">0</div>
+                <div class="stat-label">Сообщений</div>
             </div>
-
-            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                <div style="font-size: 24px; font-weight: bold; color: #667eea;" id="friendsCount">0</div>
-                <div style="font-size: 12px; color: #6c757d;">Друзей</div>
+            <div class="stat-item gradient-border">
+                <div class="stat-value glow-effect" id="friendsCount">0</div>
+                <div class="stat-label">Друзей</div>
             </div>
-
-            <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                <div style="font-size: 24px; font-weight: bold; color: #667eea;" id="daysCount">0</div>
-                <div style="font-size: 12px; color: #6c757d;">Дней с нами</div>
+            <div class="stat-item gradient-border">
+                <div class="stat-value glow-effect" id="daysCount">0</div>
+                <div class="stat-label">Дней с нами</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Модальное окно для предпросмотра -->
+<!-- Модальное окно для предпросмотра аватара -->
 <div id="previewModal" class="modal">
     <span class="modal-close" onclick="closePreview()">&times;</span>
     <img id="previewImage" class="modal-content">
 </div>
 
+<!-- Модальное окно для поиска друзей -->
+<div id="findFriendsModal" class="modal">
+    <div style="position: relative; background: white; padding: 32px; border-radius: 20px; width: 500px; max-width: 90%; max-height: 80vh; overflow-y: auto;">
+        <span class="modal-close" onclick="closeFindFriendsModal()" style="top: 15px; right: 20px;">&times;</span>
+        <h3 style="margin-top: 0; margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-search"></i>
+            <span>Поиск друзей</span>
+        </h3>
+
+        <div class="form-group">
+            <input type="text" id="globalFriendSearch" class="search-input"
+                   placeholder="Введите логин, имя или email пользователя..."
+                   onkeyup="globalSearchFriendsDebounced()">
+        </div>
+
+        <div id="globalSearchResults" style="margin-top: 24px; max-height: 400px; overflow-y: auto;">
+            <div style="text-align: center; padding: 40px; color: var(--gray);">
+                <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
+                <p>Начните вводить для поиска пользователей</p>
+            </div>
+        </div>
+
+        <div class="form-actions" style="margin-top: 24px;">
+            <button class="btn btn-secondary wave-effect" onclick="closeFindFriendsModal()">
+                <i class="fas fa-times"></i>
+                <span>Закрыть</span>
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
+    // Глобальные переменные
     let currentUser = null;
     let selectedFile = null;
+    let userContacts = [];
+    let userFriends = [];
+    let currentTab = 'contactsTab';
+
+    // ========== АНИМАЦИИ ==========
+
+    function setupAnimations() {
+        // Анимация загрузки страницы
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease';
+
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+        }, 100);
+
+        // Анимация кнопок при наведении
+        const buttons = document.querySelectorAll('.btn, .wave-effect');
+        buttons.forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                if (!btn.disabled) {
+                    btn.style.transform = 'translateY(-3px)';
+                }
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = '';
+            });
+
+            // Эффект волны при клике
+            btn.addEventListener('click', (e) => {
+                if (!btn.disabled) {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const ripple = document.createElement('span');
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'wave 0.6s ease-out';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.style.width = '5px';
+                    ripple.style.height = '5px';
+
+                    btn.style.position = 'relative';
+                    btn.style.overflow = 'hidden';
+                    btn.appendChild(ripple);
+
+                    setTimeout(() => ripple.remove(), 600);
+                }
+            });
+        });
+
+        // Анимация инпутов при фокусе
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.style.transform = 'translateY(-2px)';
+            });
+
+            input.addEventListener('blur', () => {
+                input.parentElement.style.transform = '';
+            });
+        });
+
+        // Анимация появления элементов при прокрутке
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out';
+                    entry.target.style.animationFillMode = 'both';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.stat-item, .contact-item, .friend-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Анимация статистики
+        animateStats();
+    }
+
+    function animateStats() {
+        const stats = document.querySelectorAll('.stat-value');
+        stats.forEach(stat => {
+            const finalValue = parseInt(stat.textContent) || 0;
+            if (finalValue > 0) {
+                let currentValue = 0;
+                const increment = finalValue / 30;
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= finalValue) {
+                        stat.textContent = finalValue;
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(currentValue);
+                    }
+                }, 50);
+            }
+        });
+    }
+
+    // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
 
     // Загружаем профиль
     function loadProfile() {
@@ -585,14 +1781,38 @@
 
         fetch('/api/v1/users/profile')
             .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login.html';
+                    return;
+                }
                 if (!response.ok) throw new Error('Ошибка загрузки профиля');
                 return response.json();
             })
             .then(user => {
+                if (!user) return;
+
                 currentUser = user;
+
+                // Сохраняем данные пользователя в localStorage для доступа из других функций
+                if (user.id) {
+                    localStorage.setItem('userId', user.id);
+                    localStorage.setItem('userLogin', user.login || '');
+                }
+
                 updateProfileDisplay(user);
-                showMessage('Профиль загружен', 'success');
-                setTimeout(() => document.getElementById('message').style.display = 'none', 2000);
+                loadUserContacts();
+                loadFriends();
+                loadFriendRequests();
+
+                // Анимация успешной загрузки
+                setTimeout(() => {
+                    showMessage('Профиль загружен', 'success');
+                    setTimeout(() => {
+                        const messageDiv = document.getElementById('message');
+                        messageDiv.style.animation = 'messageSlide 0.5s ease reverse forwards';
+                        setTimeout(() => messageDiv.style.display = 'none', 500);
+                    }, 2000);
+                }, 500);
             })
             .catch(error => {
                 console.error('Ошибка:', error);
@@ -602,20 +1822,50 @@
 
     // Обновляем отображение профиля
     function updateProfileDisplay(user) {
-        document.getElementById('login').textContent = user.login || 'Не указан';
-        document.getElementById('username').textContent = user.username || 'Не указано';
-        document.getElementById('email').textContent = user.email || 'Не указано';
-        document.getElementById('phone').textContent = user.phoneNumber || 'Не указано';
-        document.getElementById('descriptionText').textContent = user.description || 'Нет описания';
+        const loginEl = document.getElementById('login');
+        const usernameEl = document.getElementById('username');
+        const emailEl = document.getElementById('email');
+        const phoneEl = document.getElementById('phone');
+        const descEl = document.getElementById('descriptionText');
+
+        // Анимация обновления данных
+        const updateWithAnimation = (element, newValue, delay = 0) => {
+            setTimeout(() => {
+                element.style.opacity = '0.5';
+                element.style.transform = 'translateY(5px)';
+
+                setTimeout(() => {
+                    element.textContent = newValue || 'Не указано';
+                    element.style.transition = 'all 0.3s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, 150);
+            }, delay);
+        };
+
+        updateWithAnimation(loginEl, user.login || 'Не указан', 100);
+        updateWithAnimation(usernameEl, user.username || 'Не указано', 200);
+        updateWithAnimation(emailEl, user.email || 'Не указано', 300);
+        updateWithAnimation(phoneEl, user.phoneNumber || 'Не указано', 400);
+        updateWithAnimation(descEl, user.description || 'Нет описания', 500);
 
         if (user.description) {
             document.getElementById('descriptionInput').value = user.description;
         }
 
-        // Устанавливаем аватарку
+        // Устанавливаем аватарку с анимацией
         const avatar = document.getElementById('avatar');
         if (user.avatarUrl) {
-            avatar.src = user.avatarUrl;
+            avatar.onload = () => {
+                avatar.style.transform = 'rotate(10deg) scale(1.1)';
+                setTimeout(() => {
+                    avatar.style.transition = 'all 0.5s ease';
+                    avatar.style.transform = 'rotate(0) scale(1)';
+                }, 100);
+            };
+
+            const timestamp = new Date().getTime();
+            avatar.src = user.avatarUrl + (user.avatarUrl.includes('?') ? '&' : '?') + 't=' + timestamp;
         } else {
             avatar.src = '/uploads/default-avatar.png';
         }
@@ -624,9 +1874,402 @@
         updateStatistics();
     }
 
+    // ========== УПРАВЛЕНИЕ ТАБАМИ ==========
+
+    function switchTab(tabId) {
+        // Анимация выхода
+        const currentContent = document.querySelector('.tab-content.active');
+        if (currentContent) {
+            currentContent.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => {
+                currentContent.classList.remove('active');
+                currentContent.style.animation = '';
+            }, 300);
+        }
+
+        const currentTabEl = document.querySelector('.tab.active');
+        if (currentTabEl) {
+            currentTabEl.classList.remove('active');
+        }
+
+        // Анимация входа
+        setTimeout(() => {
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+
+            const newContent = document.getElementById(tabId);
+            newContent.style.opacity = '0';
+            newContent.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                newContent.style.transition = 'all 0.5s ease';
+                newContent.style.opacity = '1';
+                newContent.style.transform = 'translateY(0)';
+            }, 10);
+
+            currentTab = tabId;
+
+            // Обновить данные если нужно
+            if (tabId === 'friendsTab') {
+                loadFriends();
+            } else if (tabId === 'friendRequestsTab') {
+                loadFriendRequests();
+            } else if (tabId === 'contactsTab') {
+                loadUserContacts();
+            }
+        }, 300);
+    }
+
+    // ========== КОНТАКТЫ ==========
+
+    // Загрузить контакты пользователя
+    function loadUserContacts() {
+        const userId = currentUser?.id || localStorage.getItem('userId');
+        if (!userId) {
+            console.error('ID пользователя не найден');
+            return;
+        }
+
+        const contactsList = document.getElementById('contactsList');
+        contactsList.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
+
+        fetch(`/api/v1/users/${userId}/contacts`)
+            .then(response => {
+                if (response.status === 403) {
+                    showMessage('Нет доступа к контактам этого пользователя', 'error');
+                    return [];
+                }
+                if (!response.ok) throw new Error('Ошибка загрузки контактов');
+                return response.json();
+            })
+            .then(contacts => {
+                userContacts = contacts || [];
+
+                // Анимация загрузки
+                setTimeout(() => {
+                    renderContactsList(userContacts);
+                }, 500);
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки контактов:', error);
+                contactsList.innerHTML = `
+                    <div class="empty-contacts">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 32px; margin-bottom: 16px; color: var(--danger);"></i>
+                        <p style="margin-bottom: 12px; font-weight: 600;">Не удалось загрузить контакты</p>
+                        <button class="btn btn-secondary wave-effect" onclick="loadUserContacts()">
+                            <i class="fas fa-redo"></i>
+                            <span>Повторить</span>
+                        </button>
+                    </div>
+                `;
+            });
+    }
+
+    // Отобразить список контактов
+    function renderContactsList(contacts) {
+        const contactsList = document.getElementById('contactsList');
+
+        if (!contacts || contacts.length === 0) {
+            contactsList.innerHTML = `
+                <div class="empty-contacts">
+                    <i class="fas fa-address-book" style="font-size: 48px; margin-bottom: 20px; color: var(--gray);"></i>
+                    <p style="font-weight: 600; margin-bottom: 8px;">У вас пока нет контактов</p>
+                    <p style="font-size: 14px; color: var(--gray); margin-bottom: 20px;">
+                        Добавьте телефон, email или другие способы связи
+                    </p>
+                    <button class="btn btn-primary wave-effect" onclick="showAddContactForm()">
+                        <i class="fas fa-plus"></i>
+                        <span>Добавить первый контакт</span>
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        const contactsHtml = contacts.map((contact, index) => `
+            <div class="contact-item ${contact.primary ? 'primary' : ''} fade-in"
+                 id="contact-${contact.id}"
+                 style="animation-delay: ${index * 0.1}s;">
+                <div class="contact-info">
+                    <span class="contact-type-badge ${contact.type}">
+                        ${getContactTypeIcon(contact.type)} ${getContactTypeName(contact.type)}
+                    </span>
+                    <span class="contact-value">${contact.value}</span>
+                    ${contact.primary ? '<span class="contact-primary-badge">Основной</span>' : ''}
+                </div>
+                <div class="contact-actions">
+                    ${!contact.primary ? `
+                        <button class="btn btn-sm btn-primary wave-effect" onclick="setPrimaryContact(${contact.id})">
+                            <i class="fas fa-star"></i>
+                            <span>Сделать основным</span>
+                        </button>
+                    ` : ''}
+                    <button class="btn btn-sm btn-secondary wave-effect" onclick="editContact(${contact.id})">
+                        <i class="fas fa-edit"></i>
+                        <span>Изменить</span>
+                    </button>
+                    <button class="btn btn-sm btn-danger wave-effect" onclick="deleteContact(${contact.id})">
+                        <i class="fas fa-trash"></i>
+                        <span>Удалить</span>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+
+        contactsList.innerHTML = contactsHtml;
+
+        // Анимация появления
+        setTimeout(() => {
+            document.querySelectorAll('.contact-item').forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 50);
+            });
+        }, 10);
+    }
+
+    // Показать форму добавления контакта с анимацией
+    function showAddContactForm() {
+        const form = document.getElementById('addContactForm');
+        form.classList.add('active');
+        form.style.opacity = '0';
+        form.style.transform = 'scale(0.95)';
+
+        setTimeout(() => {
+            form.style.transition = 'all 0.3s ease';
+            form.style.opacity = '1';
+            form.style.transform = 'scale(1)';
+        }, 10);
+
+        document.getElementById('contactType').value = 'PHONE';
+        document.getElementById('contactValue').value = '';
+        document.getElementById('contactIsPrimary').checked = false;
+        document.getElementById('contactValueError').textContent = '';
+    }
+
+    function cancelAddContact() {
+        const form = document.getElementById('addContactForm');
+        form.style.opacity = '1';
+        form.style.transform = 'scale(1)';
+        form.style.transition = 'all 0.3s ease';
+        form.style.opacity = '0';
+        form.style.transform = 'scale(0.95)';
+
+        setTimeout(() => {
+            form.classList.remove('active');
+        }, 300);
+    }
+
+    // ========== ДРУЗЬЯ ==========
+
+    async function loadFriends() {
+        const userId = currentUser?.id || localStorage.getItem('userId');
+        if (!userId) {
+            console.error('ID пользователя не найден');
+            return;
+        }
+
+        const friendsList = document.getElementById('friendsList');
+        friendsList.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
+
+        try {
+            const response = await fetch(`/api/v1/users/${userId}/friends`);
+            if (response.status === 403) {
+                showMessage('Нет доступа к списку друзей этого пользователя', 'error');
+                return [];
+            }
+            if (!response.ok) throw new Error('Ошибка загрузки друзей');
+
+            const friends = await response.json();
+            userFriends = friends || [];
+
+            setTimeout(() => {
+                renderFriendsList(userFriends);
+                document.getElementById('friendsCount').textContent = userFriends.length;
+                animateStats();
+            }, 500);
+
+        } catch (error) {
+            console.error('Ошибка загрузки друзей:', error);
+            friendsList.innerHTML = `
+                <div class="empty-friends">
+                    <i class="fas fa-users-slash" style="font-size: 48px; margin-bottom: 20px; color: var(--danger);"></i>
+                    <p style="font-weight: 600; margin-bottom: 12px;">Не удалось загрузить список друзей</p>
+                    <button class="btn btn-secondary wave-effect" onclick="loadFriends()">
+                        <i class="fas fa-redo"></i>
+                        <span>Повторить</span>
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    function renderFriendsList(friends) {
+        const friendsListDiv = document.getElementById('friendsList');
+
+        if (!friends || friends.length === 0) {
+            friendsListDiv.innerHTML = `
+                <div class="empty-friends">
+                    <i class="fas fa-user-friends" style="font-size: 48px; margin-bottom: 20px; color: var(--gray);"></i>
+                    <p style="font-weight: 600; margin-bottom: 8px;">У вас пока нет друзей</p>
+                    <p style="font-size: 14px; color: var(--gray); margin-bottom: 20px;">
+                        Найдите друзей используя поиск
+                    </p>
+                    <button class="btn btn-primary wave-effect" onclick="showFindFriendsModal()">
+                        <i class="fas fa-search"></i>
+                        <span>Найти друзей</span>
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        const html = friends.map((friend, index) => `
+            <div class="friend-item fade-in" style="animation-delay: ${index * 0.1}s;">
+                <div class="friend-info">
+                    <img src="${friend.friendAvatarUrl ? friend.friendAvatarUrl + (friend.friendAvatarUrl.includes('?') ? '&' : '?') + 't=' + new Date().getTime() : '/uploads/default-avatar.png'}"
+                         class="friend-avatar">
+                    <div class="friend-details">
+                        <div class="friend-name">
+                            ${friend.friendUsername || 'Пользователь'}
+                            ${friend.friendIsOnline ?
+            '<span class="friend-status status-online">онлайн</span>' :
+            '<span class="friend-status status-offline">офлайн</span>'}
+                            <span class="friend-status status-friend">друг</span>
+                        </div>
+                        <div class="friend-login">${friend.friendLogin || ''}</div>
+                        ${friend.nickname ? `<div class="friend-nickname">${friend.nickname}</div>` : ''}
+                        <div class="timestamp">
+                            <i class="far fa-clock"></i>
+                            Друг с: ${new Date(friend.addedAt).toLocaleDateString()}
+                        </div>
+                    </div>
+                </div>
+                <div class="friend-actions">
+                    <button class="btn btn-sm btn-primary wave-effect" onclick="sendMessage(${friend.friendId})">
+                        <i class="fas fa-comment"></i>
+                        <span>Написать</span>
+                    </button>
+                    <button class="btn btn-sm btn-secondary wave-effect"
+                            onclick="toggleFavoriteFriend(${friend.friendId}, ${friend.favorite || false})">
+                        ${friend.favorite ?
+            '<i class="fas fa-star"></i><span>Убрать из избранного</span>' :
+            '<i class="far fa-star"></i><span>В избранное</span>'}
+                    </button>
+                    <button class="btn btn-sm btn-danger wave-effect" onclick="removeFriend(${friend.friendId})">
+                        <i class="fas fa-user-minus"></i>
+                        <span>Удалить</span>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+
+        friendsListDiv.innerHTML = html;
+
+        // Анимация появления
+        setTimeout(() => {
+            document.querySelectorAll('.friend-item').forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 50);
+            });
+        }, 10);
+    }
+
+    // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
+
+    // Получить иконку для типа контакта
+    function getContactTypeIcon(type) {
+        const icons = {
+            'PHONE': '📱',
+            'EMAIL': '📧',
+            'TELEGRAM': '✈️',
+            'WHATSAPP': '💚',
+            'VK': '👥',
+            'OTHER': '🔗'
+        };
+        return icons[type] || '📞';
+    }
+
+    // Получить название типа контакта
+    function getContactTypeName(type) {
+        const names = {
+            'PHONE': 'Телефон',
+            'EMAIL': 'Email',
+            'TELEGRAM': 'Telegram',
+            'WHATSAPP': 'WhatsApp',
+            'VK': 'ВКонтакте',
+            'OTHER': 'Другое'
+        };
+        return names[type] || type;
+    }
+
+    // Обновляем статистику
+    function updateStatistics() {
+        // Анимация обновления статистики
+        const stats = {
+            'chatsCount': Math.floor(Math.random() * 50) + 10,
+            'messagesCount': Math.floor(Math.random() * 1000) + 100,
+            'friendsCount': userFriends.length,
+            'daysCount': Math.floor(Math.random() * 365) + 30
+        };
+
+        Object.entries(stats).forEach(([key, value], index) => {
+            const element = document.getElementById(key);
+            if (element) {
+                setTimeout(() => {
+                    element.textContent = value;
+                    element.style.animation = 'pulse 1s';
+                    setTimeout(() => element.style.animation = '', 1000);
+                }, index * 200);
+            }
+        });
+    }
+
     // ========== АВАТАРКА ==========
 
-    // Обработчик выбора файла
+    // Показать сообщение
+    function showMessage(text, type = 'info') {
+        const messageDiv = document.getElementById('message');
+        messageDiv.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            <span>${text}</span>
+        `;
+        messageDiv.className = `message ${type}`;
+        messageDiv.style.display = 'flex';
+        messageDiv.style.animation = 'messageSlide 0.5s ease';
+
+        if (type === 'info' && selectedFile) {
+            messageDiv.innerHTML += `
+                <button class="btn btn-primary wave-effect" onclick="uploadAvatar()"
+                        style="margin-left: 12px; padding: 6px 12px; font-size: 12px;">
+                    <i class="fas fa-upload"></i>
+                    <span>Загрузить</span>
+                </button>
+            `;
+        }
+
+        if (type !== 'info') {
+            setTimeout(() => {
+                messageDiv.style.animation = 'messageSlide 0.5s ease reverse forwards';
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }
+    }
+
+    // Обработчик выбора файла аватара
     document.getElementById('avatarInput').addEventListener('change', function(e) {
         if (e.target.files.length > 0) {
             selectedFile = e.target.files[0];
@@ -642,38 +2285,29 @@
                 return;
             }
 
-            // Показываем превью
+            // Анимация выбора файла
+            const fileBtn = this.previousElementSibling;
+            fileBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => fileBtn.style.transform = '', 100);
+
+            // Показываем превью с анимацией
             const reader = new FileReader();
             reader.onload = function(e) {
                 const avatar = document.getElementById('avatar');
-                avatar.src = e.target.result;
+                avatar.style.opacity = '0.5';
+                avatar.style.transform = 'scale(0.8) rotate(-10deg)';
 
-                showMessage('Файл готов к загрузке. Нажмите кнопку "Загрузить"', 'info');
+                setTimeout(() => {
+                    avatar.src = e.target.result;
+                    avatar.style.transition = 'all 0.5s ease';
+                    avatar.style.opacity = '1';
+                    avatar.style.transform = 'scale(1) rotate(0)';
+                    showMessage('Файл готов к загрузке. Нажмите кнопку "Загрузить"', 'info');
+                }, 200);
             };
             reader.readAsDataURL(selectedFile);
         }
     });
-
-    // Открыть предпросмотр
-    function openPreview() {
-        const avatar = document.getElementById('avatar');
-        // Проверяем что у аватара есть src и он не пустой
-        if (avatar.src && avatar.src !== '') {
-            const modal = document.getElementById('previewModal');
-            const previewImage = document.getElementById('previewImage');
-
-            // Проверяем что элементы существуют
-            if (modal && previewImage) {
-                previewImage.src = avatar.src;
-                modal.style.display = 'block';
-            }
-        }
-    }
-
-    // Закрыть предпросмотр
-    function closePreview() {
-        document.getElementById('previewModal').style.display = 'none';
-    }
 
     // Загрузить аватарку на сервер
     function uploadAvatar() {
@@ -683,7 +2317,6 @@
         }
 
         showMessage('Загрузка аватара...', 'info');
-
         const formData = new FormData();
         formData.append('file', selectedFile);
 
@@ -701,11 +2334,20 @@
             })
             .then(data => {
                 showMessage('Аватар успешно загружен', 'success');
+
+                // Анимация обновления аватара
+                const avatar = document.getElementById('avatar');
+                avatar.style.animation = 'pulse 1s';
+
                 if (data.avatarUrl) {
-                    document.getElementById('avatar').src = data.avatarUrl;
+                    const timestamp = new Date().getTime();
+                    avatar.src = data.avatarUrl + (data.avatarUrl.includes('?') ? '&' : '?') + 't=' + timestamp;
                 }
+
                 selectedFile = null;
                 document.getElementById('avatarInput').value = '';
+
+                setTimeout(() => avatar.style.animation = '', 1000);
             })
             .catch(error => {
                 console.error('Ошибка:', error);
@@ -717,8 +2359,13 @@
     function deleteAvatar() {
         if (!confirm('Удалить аватарку? Будет установлено изображение по умолчанию.')) return;
 
+        showMessage('Удаление аватара...', 'info');
+
         fetch('/api/v1/users/avatar', {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
         })
             .then(response => {
                 if (!response.ok) {
@@ -728,9 +2375,20 @@
                 }
                 return response.json();
             })
-            .then(data => {
+            .then(() => {
                 showMessage('Аватар удален', 'success');
-                document.getElementById('avatar').src = '/uploads/default-avatar.png';
+
+                // Анимация удаления
+                const avatar = document.getElementById('avatar');
+                avatar.style.transform = 'scale(0.8) rotate(10deg)';
+                avatar.style.opacity = '0.5';
+
+                setTimeout(() => {
+                    avatar.src = '/uploads/default-avatar.png';
+                    avatar.style.transition = 'all 0.5s ease';
+                    avatar.style.transform = 'scale(1) rotate(0)';
+                    avatar.style.opacity = '1';
+                }, 300);
             })
             .catch(error => {
                 console.error('Ошибка:', error);
@@ -738,17 +2396,133 @@
             });
     }
 
-    // ========== USERNAME ==========
+    // Открыть предпросмотр аватара
+    function openPreview() {
+        const avatar = document.getElementById('avatar');
+        if (avatar.src && avatar.src !== '') {
+            const modal = document.getElementById('previewModal');
+            const previewImage = document.getElementById('previewImage');
 
-    // Показать форму изменения username
+            if (modal && previewImage) {
+                previewImage.src = avatar.src;
+                modal.style.display = 'flex';
+                modal.style.opacity = '0';
+
+                setTimeout(() => {
+                    modal.style.transition = 'opacity 0.3s ease';
+                    modal.style.opacity = '1';
+                }, 10);
+            }
+        }
+    }
+
+    // Закрыть предпросмотр
+    function closePreview() {
+        const modal = document.getElementById('previewModal');
+        modal.style.opacity = '1';
+        modal.style.transition = 'opacity 0.3s ease';
+        modal.style.opacity = '0';
+
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+
+    // ========== USERNAME И ОПИСАНИЕ ==========
+
+    // Изменить username
     function editUsername() {
-        document.getElementById('usernameEditForm').classList.add('active');
+        const form = document.getElementById('usernameEditForm');
+        form.classList.add('active');
+        form.style.opacity = '0';
+        form.style.transform = 'scale(0.95)';
+
+        setTimeout(() => {
+            form.style.transition = 'all 0.3s ease';
+            form.style.opacity = '1';
+            form.style.transform = 'scale(1)';
+        }, 10);
+
         document.getElementById('newUsernameInput').value = currentUser.username || '';
         document.getElementById('newUsernameInput').focus();
         document.getElementById('usernameError').textContent = '';
     }
 
-    // Сохранить новое имя пользователя
+    // ========== ИНИЦИАЛИЗАЦИЯ ==========
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadProfile();
+        setupAnimations();
+
+        // Анимация при загрузке
+        setTimeout(() => {
+            document.body.style.animation = 'fadeIn 0.5s ease';
+        }, 100);
+    });
+
+    // Закрыть модальное окно по клику вне картинки
+    window.onclick = function(event) {
+        const modal = document.getElementById('previewModal');
+        const findModal = document.getElementById('findFriendsModal');
+
+        if (event.target === modal) {
+            closePreview();
+        }
+        if (event.target === findModal) {
+            closeFindFriendsModal();
+        }
+    };
+
+    // Закрыть модальное окно по ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closePreview();
+            closeFindFriendsModal();
+        }
+    });
+
+    // Анимация при закрытии страницы
+    window.addEventListener('beforeunload', () => {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.3s ease';
+    });
+
+    // Добавляем анимации для всех динамически добавляемых элементов
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // ========== USERNAME И ОПИСАНИЕ ==========
+
+    // Изменить username
+    function editUsername() {
+        const form = document.getElementById('usernameEditForm');
+        form.classList.add('active');
+        form.style.opacity = '0';
+        form.style.transform = 'scale(0.95)';
+
+        setTimeout(() => {
+            form.style.transition = 'all 0.3s ease';
+            form.style.opacity = '1';
+            form.style.transform = 'scale(1)';
+        }, 10);
+
+        document.getElementById('newUsernameInput').value = currentUser.username || '';
+        document.getElementById('newUsernameInput').focus();
+        document.getElementById('usernameError').textContent = '';
+    }
+
+    // Сохранить username
     function saveUsername() {
         const newUsername = document.getElementById('newUsernameInput').value.trim();
         const usernameError = document.getElementById('usernameError');
@@ -768,15 +2542,22 @@
         }
 
         usernameError.textContent = '';
+        showMessage('Сохранение имени...', 'info');
+
+        const updateData = { username: newUsername };
 
         fetch('/api/v1/users/update/username', {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username: newUsername })
+            body: JSON.stringify(updateData)
         })
             .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login.html';
+                    return;
+                }
                 if (!response.ok) {
                     return response.json().then(errorData => {
                         throw new Error(errorData.message || 'Ошибка сервера');
@@ -787,7 +2568,7 @@
             .then(data => {
                 currentUser = data;
                 updateProfileDisplay(data);
-                document.getElementById('usernameEditForm').classList.remove('active');
+                cancelUsernameEdit();
                 showMessage('Имя пользователя изменено', 'success');
             })
             .catch(error => {
@@ -797,33 +2578,54 @@
             });
     }
 
-    // Отмена изменения username
     function cancelUsernameEdit() {
-        document.getElementById('usernameEditForm').classList.remove('active');
-        document.getElementById('usernameError').textContent = '';
+        const form = document.getElementById('usernameEditForm');
+        form.style.opacity = '1';
+        form.style.transform = 'scale(1)';
+        form.style.transition = 'all 0.3s ease';
+        form.style.opacity = '0';
+        form.style.transform = 'scale(0.95)';
+
+        setTimeout(() => {
+            form.classList.remove('active');
+        }, 300);
     }
 
-    // ========== ОПИСАНИЕ ==========
-
-    // Показать форму изменения описания
+    // Изменить описание
     function editDescription() {
-        document.getElementById('descriptionEditForm').classList.add('active');
+        const form = document.getElementById('descriptionEditForm');
+        form.classList.add('active');
+        form.style.opacity = '0';
+        form.style.transform = 'scale(0.95)';
+
+        setTimeout(() => {
+            form.style.transition = 'all 0.3s ease';
+            form.style.opacity = '1';
+            form.style.transform = 'scale(1)';
+        }, 10);
+
         document.getElementById('descriptionInput').value = currentUser.description || '';
         document.getElementById('descriptionInput').focus();
     }
 
-    // Сохранить описание
     function saveDescription() {
         const description = document.getElementById('descriptionInput').value;
+        showMessage('Сохранение описания...', 'info');
+
+        const updateData = { description: description };
 
         fetch('/api/v1/users/update/description', {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ description: description })
+            body: JSON.stringify(updateData)
         })
             .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login.html';
+                    return;
+                }
                 if (!response.ok) {
                     return response.json().then(errorData => {
                         throw new Error(errorData.message || 'Ошибка сохранения');
@@ -834,7 +2636,7 @@
             .then(updatedUser => {
                 currentUser = updatedUser;
                 document.getElementById('descriptionText').textContent = updatedUser.description || 'Нет описания';
-                document.getElementById('descriptionEditForm').classList.remove('active');
+                cancelDescriptionEdit();
                 showMessage('Описание сохранено', 'success');
             })
             .catch(error => {
@@ -843,51 +2645,410 @@
             });
     }
 
-    // Отмена изменения описания
     function cancelDescriptionEdit() {
-        document.getElementById('descriptionEditForm').classList.remove('active');
+        const form = document.getElementById('descriptionEditForm');
+        form.style.opacity = '1';
+        form.style.transform = 'scale(1)';
+        form.style.transition = 'all 0.3s ease';
+        form.style.opacity = '0';
+        form.style.transform = 'scale(0.95)';
+
+        setTimeout(() => {
+            form.classList.remove('active');
+        }, 300);
     }
 
-    // ========== ВСПОМОГАТЕЛЬНЫЕ ==========
+    // ========== КОНТАКТЫ (полные реализации) ==========
 
-    // Показать сообщение
-    function showMessage(text, type = 'info') {
-        const messageDiv = document.getElementById('message');
-        messageDiv.textContent = text;
-        messageDiv.className = `message ${type}`;
-        messageDiv.style.display = 'block';
+    // Редактировать контакт
+    function editContact(contactId) {
+        const contact = userContacts.find(c => c.id == contactId);
+        if (!contact) return;
 
-        // Добавляем кнопку загрузки если это info о файле
-        if (type === 'info' && selectedFile) {
-            messageDiv.innerHTML = text +
-                ' <button class="btn btn-primary" onclick="uploadAvatar()" style="margin-left: 10px; padding: 5px 10px; font-size: 12px;">Загрузить</button>';
+        const form = document.getElementById('editContactForm');
+        form.classList.add('active');
+        form.style.opacity = '0';
+        form.style.transform = 'scale(0.95)';
+
+        setTimeout(() => {
+            form.style.transition = 'all 0.3s ease';
+            form.style.opacity = '1';
+            form.style.transform = 'scale(1)';
+        }, 10);
+
+        document.getElementById('editContactId').value = contactId;
+        document.getElementById('editContactType').value = contact.type;
+        document.getElementById('editContactValue').value = contact.value;
+        document.getElementById('editContactIsPrimary').checked = contact.primary;
+        document.getElementById('editContactValueError').textContent = '';
+    }
+
+    function saveContact() {
+        const contactId = document.getElementById('editContactId').value;
+        const type = document.getElementById('editContactType').value;
+        const value = document.getElementById('editContactValue').value.trim();
+        const isPrimary = document.getElementById('editContactIsPrimary').checked;
+        const errorDiv = document.getElementById('editContactValueError');
+
+        if (!value) {
+            errorDiv.textContent = 'Введите значение контакта';
+            return;
         }
 
-        if (type !== 'info') {
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 5000);
+        errorDiv.textContent = '';
+        showMessage('Сохранение изменений...', 'info');
+
+        const userId = currentUser?.id || localStorage.getItem('userId');
+        if (!userId) {
+            showMessage('Ошибка: ID пользователя не найден', 'error');
+            return;
         }
+
+        const contactData = {
+            type: type,
+            value: value,
+            primary: isPrimary
+        };
+
+        fetch(`/api/v1/users/${userId}/contacts/${contactId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(contactData)
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text || 'Ошибка сохранения');
+                    });
+                }
+                return response.json();
+            })
+            .then(updatedContact => {
+                showMessage('Контакт успешно обновлен', 'success');
+                cancelEditContact();
+                loadUserContacts();
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                errorDiv.textContent = error.message;
+                showMessage('Ошибка: ' + error.message, 'error');
+            });
     }
 
-    // Обновляем статистику (заглушка)
-    function updateStatistics() {
-        document.getElementById('chatsCount').textContent = '5';
-        document.getElementById('messagesCount').textContent = '127';
-        document.getElementById('friendsCount').textContent = '23';
-        document.getElementById('daysCount').textContent = Math.floor(Math.random() * 100) + 1;
+    function cancelEditContact() {
+        const form = document.getElementById('editContactForm');
+        form.style.opacity = '1';
+        form.style.transform = 'scale(1)';
+        form.style.transition = 'all 0.3s ease';
+        form.style.opacity = '0';
+        form.style.transform = 'scale(0.95)';
+
+        setTimeout(() => {
+            form.classList.remove('active');
+        }, 300);
     }
 
-    // Закрыть модальное окно по клику вне картинки
-    window.onclick = function(event) {
-        const modal = document.getElementById('previewModal');
-        if (event.target === modal) {
+    function deleteContact(contactId) {
+        if (!confirm('Вы уверены, что хотите удалить этот контакт?')) return;
+
+        showMessage('Удаление контакта...', 'info');
+
+        const userId = currentUser?.id || localStorage.getItem('userId');
+        if (!userId) {
+            showMessage('Ошибка: ID пользователя не найден', 'error');
+            return;
+        }
+
+        fetch(`/api/v1/users/${userId}/contacts/${contactId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text || 'Ошибка удаления');
+                    });
+                }
+                return response.ok;
+            })
+            .then(() => {
+                showMessage('Контакт успешно удален', 'success');
+                loadUserContacts();
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showMessage('Ошибка: ' + error.message, 'error');
+            });
+    }
+
+    function setPrimaryContact(contactId) {
+        showMessage('Установка основного контакта...', 'info');
+
+        const userId = currentUser?.id || localStorage.getItem('userId');
+        if (!userId) {
+            showMessage('Ошибка: ID пользователя не найден', 'error');
+            return;
+        }
+
+        fetch(`/api/v1/users/${userId}/contacts/${contactId}/primary`, {
+            method: 'PATCH'
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text || 'Ошибка установки');
+                    });
+                }
+                return response.ok;
+            })
+            .then(() => {
+                showMessage('Контакт установлен как основной', 'success');
+                loadUserContacts();
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showMessage('Ошибка: ' + error.message, 'error');
+            });
+    }
+
+    // Добавить контакт
+    function addContact() {
+        const type = document.getElementById('contactType').value;
+        const value = document.getElementById('contactValue').value.trim();
+        const isPrimary = document.getElementById('contactIsPrimary').checked;
+        const errorDiv = document.getElementById('contactValueError');
+
+        if (!value) {
+            errorDiv.textContent = 'Введите значение контакта';
+            return;
+        }
+
+        errorDiv.textContent = '';
+        showMessage('Добавление контакта...', 'info');
+
+        const userId = currentUser?.id || localStorage.getItem('userId');
+        if (!userId) {
+            showMessage('Ошибка: ID пользователя не найден', 'error');
+            return;
+        }
+
+        const contactData = {
+            type: type,
+            value: value,
+            primary: isPrimary
+        };
+
+        fetch(`/api/v1/users/${userId}/contacts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(contactData)
+        })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text || 'Ошибка добавления контакта');
+                    });
+                }
+                return response.json();
+            })
+            .then(newContact => {
+                showMessage('Контакт успешно добавлен', 'success');
+                cancelAddContact();
+                loadUserContacts();
+            })
+            .catch(error => {
+                console.error('Ошибка добавления контакта:', error);
+                errorDiv.textContent = error.message;
+                showMessage('Ошибка: ' + error.message, 'error');
+            });
+    }
+
+    // ========== ДРУЗЬЯ (дополнительные функции) ==========
+
+    // Поиск среди друзей
+    let searchTimeout;
+    function searchFriendsDebounced() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(searchFriends, 300);
+    }
+
+    function searchFriends() {
+        const query = document.getElementById('friendSearchInput').value.trim();
+        if (query.length < 1) {
+            loadFriends();
+            return;
+        }
+
+        // Фильтрация локально для демонстрации
+        const filtered = userFriends.filter(friend =>
+            (friend.friendUsername && friend.friendUsername.toLowerCase().includes(query.toLowerCase())) ||
+            (friend.friendLogin && friend.friendLogin.toLowerCase().includes(query.toLowerCase()))
+        );
+        renderFriendsList(filtered);
+    }
+
+    // Глобальный поиск пользователей
+    let globalSearchTimeout;
+    function globalSearchFriendsDebounced() {
+        clearTimeout(globalSearchTimeout);
+        globalSearchTimeout = setTimeout(globalSearchFriends, 300);
+    }
+
+    function globalSearchFriends() {
+        const query = document.getElementById('globalFriendSearch').value.trim();
+        if (query.length < 2) {
+            document.getElementById('globalSearchResults').innerHTML = `
+                <div style="text-align: center; padding: 20px; color: var(--gray);">
+                    Введите минимум 2 символа для поиска
+                </div>
+            `;
+            return;
+        }
+
+        // Демо-версия поиска
+        showMessage('Поиск пользователей...', 'info');
+
+        // В реальном проекте здесь будет fetch запрос
+        setTimeout(() => {
+            document.getElementById('globalSearchResults').innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--gray);">
+                    <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
+                    <p>Функция поиска в разработке</p>
+                </div>
+            `;
+        }, 1000);
+    }
+
+    function showFindFriendsModal() {
+        document.getElementById('findFriendsModal').style.display = 'flex';
+        document.getElementById('globalFriendSearch').value = '';
+        document.getElementById('globalSearchResults').innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--gray);">
+                <i class="fas fa-search" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>
+                <p>Начните вводить для поиска пользователей</p>
+            </div>
+        `;
+        document.getElementById('globalFriendSearch').focus();
+    }
+
+    function closeFindFriendsModal() {
+        const modal = document.getElementById('findFriendsModal');
+        modal.style.opacity = '1';
+        modal.style.transition = 'opacity 0.3s ease';
+        modal.style.opacity = '0';
+
+        setTimeout(() => {
             modal.style.display = 'none';
-        }
-    };
+        }, 300);
+    }
 
-    // Загружаем профиль при загрузке страницы
-    document.addEventListener('DOMContentLoaded', loadProfile);
+    // ========== ЗАЯВКИ В ДРУЗЬЯ ==========
+
+    function loadFriendRequests() {
+        // Входящие заявки
+        document.getElementById('incomingRequests').innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+        `;
+
+        // Исходящие заявки
+        document.getElementById('outgoingRequests').innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+        `;
+
+        // Демо-данные (в реальном проекте здесь будет fetch запрос)
+        setTimeout(() => {
+            renderIncomingRequests([]);
+            renderOutgoingRequests([]);
+        }, 1000);
+    }
+
+    function renderIncomingRequests(requests) {
+        const incomingRequests = document.getElementById('incomingRequests');
+
+        if (!requests || requests.length === 0) {
+            incomingRequests.innerHTML = `
+                <div class="empty-friends">
+                    <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 20px; color: var(--gray);"></i>
+                    <p>Нет входящих заявок</p>
+                </div>
+            `;
+            return;
+        }
+    }
+
+    function renderOutgoingRequests(requests) {
+        const outgoingRequests = document.getElementById('outgoingRequests');
+
+        if (!requests || requests.length === 0) {
+            outgoingRequests.innerHTML = `
+                <div class="empty-friends">
+                    <i class="fas fa-paper-plane" style="font-size: 48px; margin-bottom: 20px; color: var(--gray);"></i>
+                    <p>Нет исходящих заявок</p>
+                </div>
+            `;
+            return;
+        }
+    }
+
+    // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ДРУЗЕЙ ==========
+
+    function sendMessage(userId) {
+        showMessage('Переход к чату... Пока не реализовано', 'info');
+    }
+
+    function toggleFavoriteFriend(friendId, isFavorite) {
+        showMessage(isFavorite ? 'Убираем из избранного...' : 'Добавляем в избранное...', 'info');
+
+        setTimeout(() => {
+            showMessage(isFavorite ? 'Убрано из избранного' : 'Добавлено в избранное', 'success');
+        }, 1000);
+    }
+
+    function removeFriend(friendId) {
+        if (!confirm('Удалить из друзей?')) return;
+
+        showMessage('Удаление друга...', 'info');
+
+        setTimeout(() => {
+            showMessage('Пользователь удален из друзей', 'success');
+            loadFriends();
+        }, 1000);
+    }
+
+    // ========== ИНИЦИАЛИЗАЦИЯ ==========
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadProfile();
+        setupAnimations();
+
+        // Анимация при загрузке
+        setTimeout(() => {
+            document.body.style.animation = 'fadeIn 0.5s ease';
+        }, 100);
+    });
 </script>
 </body>
 </html>

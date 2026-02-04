@@ -25,7 +25,7 @@ public class UserAvatarController {
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam("file") MultipartFile file) {
 
-        String login = userDetails.getUsername(); // ← это login, не username
+        String login = userDetails.getUsername();
         log.info("Загрузка аватарки для пользователя с логином: {}", login);
 
         try {

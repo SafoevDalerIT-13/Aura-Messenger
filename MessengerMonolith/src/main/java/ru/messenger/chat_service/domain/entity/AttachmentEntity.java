@@ -13,6 +13,7 @@ import lombok.*;
 public class AttachmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "file_name", nullable = false)

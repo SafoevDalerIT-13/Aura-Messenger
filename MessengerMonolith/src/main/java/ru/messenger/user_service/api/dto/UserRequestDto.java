@@ -10,7 +10,6 @@ import lombok.Data;
 @Data
 @Builder
 public class UserRequestDto {
-
     @NotBlank(message = "Логин обязателен")
     @Size(min = 3, max = 50, message = "Логин должен быть от 3 до 50 символов")
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Логин может содержать только латиницу, цифры и подчеркивание")

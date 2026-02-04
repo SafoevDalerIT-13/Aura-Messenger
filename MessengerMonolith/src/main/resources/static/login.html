@@ -4,112 +4,509 @@
     <meta charset="UTF-8">
     <title>Вход</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
-        .error {
-            color: red;
-            background: #ffe6e6;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid red;
-            border-radius: 4px;
-            text-align: center;
-            display: none;
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--dark);
+            animation: gradientShift 15s ease infinite;
+            background-size: 400% 400%;
         }
-        .success {
-            color: green;
-            background: #e6ffe6;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid green;
-            border-radius: 4px;
-            text-align: center;
-            display: none;
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .info {
-            color: #666;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
+
+        .login-container {
             width: 100%;
-            font-size: 16px;
+            max-width: 420px;
+            animation: fadeInUp 0.6s ease-out;
         }
-        button:hover {
-            background: #0056b3;
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .login-hint {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 4px;
-            margin: 15px 0;
-            border: 1px solid #dee2e6;
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .logo p {
+            color: var(--gray);
             font-size: 14px;
         }
+
+        .message {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            animation: slideDown 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 2px solid transparent;
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: var(--danger);
+            border-color: #fca5a5;
+            animation: shake 0.5s ease;
+        }
+
+        .message.success {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: var(--success);
+            border-color: #34d399;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            animation: fadeIn 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--light);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input:hover {
+            border-color: #cbd5e1;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+
+        input:focus + .input-icon {
+            color: var(--primary);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 45px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.3s ease;
+            z-index: 2;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .info {
+            color: var(--gray);
+            font-size: 12px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .info i {
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-loading .btn-text {
+            opacity: 0;
+        }
+
+        .btn-spinner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-loading .btn-spinner {
+            opacity: 1;
+        }
+
+        .login-hint {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 2px solid #cbd5e1;
+            animation: fadeIn 0.8s ease-out;
+        }
+
         .login-hint strong {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        .login-hint div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 6px 0;
+            color: var(--gray);
+            font-size: 13px;
+            transition: transform 0.3s ease;
+        }
+
+        .login-hint div:hover {
+            transform: translateX(5px);
+            color: var(--primary);
+        }
+
+        .login-hint div i {
+            color: var(--primary);
+            font-size: 12px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-light);
+            color: var(--gray);
+            font-size: 14px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .footer a:hover {
+            color: var(--primary-dark);
+        }
+
+        .footer a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .footer a:hover:after {
+            width: 100%;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Дополнительные стили */
+        .floating-icons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-icons i {
+            font-size: 24px;
+            color: var(--primary);
+            opacity: 0.3;
+        }
+
+        .floating-icons i:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .floating-icons i:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+
+            .logo h1 {
+                font-size: 28px;
+            }
+
+            input {
+                padding: 12px 14px;
+            }
+
+            .floating-icons {
+                display: none;
+            }
+        }
+
+        /* Плавный скролл */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-<h2>Вход в мессенджер</h2>
+<div class="login-container">
+    <div class="login-card">
+        <div class="floating-icons">
+            <i class="fas fa-comment"></i>
+            <i class="fas fa-paper-plane"></i>
+            <i class="fas fa-users"></i>
+        </div>
 
-<div class="error" id="errorMessage"></div>
-<div class="success" id="successMessage"></div>
+        <div class="logo">
+            <h1>✉️ Мессенджер</h1>
+            <p>Снова с нами? Войдите в свой аккаунт</p>
+        </div>
 
-<div class="login-hint">
-    <strong>Можно войти с помощью:</strong>
-    <div>• Логина (example123)</div>
-    <div>• Номера телефона (+79991234567)</div>
-    <div>• Email (если указан при регистрации)</div>
+        <div class="message error" id="errorMessage" style="display: none;"></div>
+        <div class="message success" id="successMessage" style="display: none;"></div>
+
+        <div class="login-hint">
+            <strong>Можно войти с помощью:</strong>
+            <div><i class="fas fa-user"></i> Логина (example123)</div>
+            <div><i class="fas fa-phone"></i> Номера телефона (+79991234567)</div>
+            <div><i class="fas fa-envelope"></i> Email (если указан при регистрации)</div>
+        </div>
+
+        <form method="POST" action="/api/v1/auth/login" id="loginForm">
+            <div class="form-group">
+                <label>Логин, телефон или email:</label>
+                <div class="input-wrapper">
+                    <input type="text" name="username" required
+                           placeholder="Введите логин, телефон или email"
+                           id="identifier">
+                    <i class="fas fa-at input-icon"></i>
+                </div>
+                <div class="info">
+                    <i class="fas fa-info-circle"></i>
+                    Введите любой из указанных при регистрации данных
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Пароль:</label>
+                <div class="input-wrapper">
+                    <input type="password" name="password" required
+                           placeholder="Введите пароль"
+                           id="password">
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                        <i class="far fa-eye"></i>
+                    </button>
+                    <i class="fas fa-key input-icon"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <span class="btn-text">Войти в аккаунт</span>
+                <i class="fas fa-sign-in-alt"></i>
+            </button>
+        </form>
+
+        <div class="footer">
+            Нет аккаунта? <a href="/auth.html">Зарегистрироваться</a>
+        </div>
+    </div>
 </div>
-
-<form method="POST" action="/api/v1/auth/login">
-    <div class="form-group">
-        <label>Логин, телефон или email:</label>
-        <input type="text" name="username" required
-               placeholder="Введите логин, телефон или email"
-               id="identifier">
-        <div class="info">Введите любой из указанных при регистрации данных</div>
-    </div>
-
-    <div class="form-group">
-        <label>Пароль:</label>
-        <input type="password" name="password" required>
-    </div>
-
-    <button type="submit">Войти</button>
-</form>
-
-<p style="text-align: center; margin-top: 20px;">
-    Нет аккаунта? <a href="/auth.html">Зарегистрироваться</a>
-</p>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -117,19 +514,19 @@
 
         // Обработка ошибок
         if (urlParams.has('error')) {
-            showError('Неверный логин/телефон/email или пароль');
+            showError('❌ Неверный логин/телефон/email или пароль');
             window.history.replaceState({}, '', '/login.html');
         }
 
         // Обработка успешного выхода
         if (urlParams.has('logout')) {
-            showSuccess('Вы успешно вышли из системы');
+            showSuccess('✅ Вы успешно вышли из системы');
             window.history.replaceState({}, '', '/login.html');
         }
 
         // Обработка успешной регистрации
         if (urlParams.has('registered')) {
-            showSuccess('Регистрация успешна! Теперь войдите в систему.');
+            showSuccess('✅ Регистрация успешна! Теперь войдите в систему.');
             window.history.replaceState({}, '', '/login.html');
         }
 
@@ -161,28 +558,88 @@
         });
 
         // Автофокус на поле ввода
-        identifierInput.focus();
+        setTimeout(() => {
+            identifierInput.focus();
+            identifierInput.style.animation = 'pulse 1s';
+            setTimeout(() => identifierInput.style.animation = '', 1000);
+        }, 300);
+
+        // Анимация при отправке формы
+        const loginForm = document.getElementById('loginForm');
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+
+        loginForm.addEventListener('submit', function(e) {
+            if (submitBtn.classList.contains('btn-loading')) {
+                e.preventDefault();
+                return;
+            }
+
+            submitBtn.classList.add('btn-loading');
+            submitBtn.innerHTML = '<div class="btn-spinner"></div>';
+
+            setTimeout(() => {
+                submitBtn.classList.remove('btn-loading');
+                submitBtn.innerHTML = '<span class="btn-text">Войти в аккаунт</span><i class="fas fa-sign-in-alt"></i>';
+            }, 2000);
+        });
+
+        // Добавляем hover эффекты
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+
+            input.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
     });
+
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const toggle = input.nextElementSibling;
+        const icon = toggle.querySelector('i');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
 
     function showError(message) {
         const errorDiv = document.getElementById('errorMessage');
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
+        errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+        errorDiv.style.display = 'flex';
+        errorDiv.style.animation = 'slideDown 0.5s ease-out';
 
         setTimeout(() => {
-            errorDiv.style.display = 'none';
+            errorDiv.style.animation = 'slideDown 0.5s ease-out reverse forwards';
+            setTimeout(() => errorDiv.style.display = 'none', 500);
         }, 5000);
     }
 
     function showSuccess(message) {
         const successDiv = document.getElementById('successMessage');
-        successDiv.textContent = message;
-        successDiv.style.display = 'block';
+        successDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+        successDiv.style.display = 'flex';
+        successDiv.style.animation = 'slideDown 0.5s ease-out';
 
         setTimeout(() => {
-            successDiv.style.display = 'none';
+            successDiv.style.animation = 'slideDown 0.5s ease-out reverse forwards';
+            setTimeout(() => successDiv.style.display = 'none', 500);
         }, 5000);
     }
+
+    // Добавляем плавное появление элементов
+    document.querySelectorAll('.form-group').forEach((group, index) => {
+        group.style.animationDelay = `${index * 0.1}s`;
+    });
 </script>
 </body>
 </html>

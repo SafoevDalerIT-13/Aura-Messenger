@@ -2,7 +2,7 @@ spring:
   application:
     name: user-service
 
-#Для postgresSQL
+  # Для postgresSQL
   datasource:
     url: jdbc:postgresql://localhost/aura_messenger
     username: postgres
@@ -12,9 +12,41 @@ spring:
       connection-timeout: 30000
       maximum-pool-size: 10
 
+  # Flyway Configuration
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    clean-disabled: true
+    locations: classpath:db/migration
+    schemas: public
+    default-schema: public
+    table: flyway_schema_history
+    # Опционально: смешанные миграции (SQL и Java)
+    # mixed: true
+
+    # Если нужно игнорировать отсутствующие миграции
+    # ignore-missing-migrations: true
+
+    # Если нужно игнорировать будущие миграции
+    # ignore-future-migrations: false
+
+    # Запускать миграции при старте приложения
+    # Этот параметр включен по умолчанию
+    # baseline-description: "init"
+    # baseline-version: "1"
+
+    # Для отладки
+    # out-of-order: false
+    # placeholder-replacement: true
+    # placeholders:
+    #   key: value
+
   jpa:
+    # ВАЖНО: Изменяем с create-drop на validate!
+    # Flyway будет управлять схемой БД
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate:
@@ -24,6 +56,17 @@ spring:
         order_inserts: true
         order_updates: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+        # Дополнительные настройки для работы с Flyway
+        # default_schema: public
+        # temp.use_jdbc_metadata_defaults: false
+
+        # Отключаем автоматическое создание таблиц
+        # jakarta.persistence.schema-generation.database.action: none
+
+        # Если будут проблемы с кэшем
+        # cache.use_second_level_cache: false
+        # cache.use_query_cache: false
 
   servlet:
     multipart:
@@ -35,6 +78,16 @@ spring:
 file:
   upload-dir: uploads
 
+# Flyway configuration properties (можно вынести отдельно)
+flyway:
+# Можно переопределить настройки Spring Flyway здесь
+# locations: filesystem:/custom/migrations
+# sql-migration-prefix: V
+# sql-migration-separator: __
+# sql-migration-suffixes: .sql
+# repeatable-sql-migration-prefix: R
+# target: latest
+
 # Логирование
 logging:
   level:
@@ -42,6 +95,12 @@ logging:
     org.springframework.security: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+    # Логирование Flyway
+    org.flywaydb: DEBUG
+    org.flywaydb.core.Flyway: INFO
+    org.flywaydb.core.internal.command.DbMigrate: DEBUG
+    org.flywaydb.core.internal.database.DatabaseFactory: DEBUG
 
 server:
   port: 8080

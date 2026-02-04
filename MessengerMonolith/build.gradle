@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.7'
     id 'io.spring.dependency-management' version '1.1.7'
+    id "org.flywaydb.flyway" version "10.0.0"
 }
 
 group = 'ru.messenger'
@@ -46,5 +47,30 @@ dependencies {
     // Для JSON
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+    // Flyway
+    implementation 'org.flywaydb:flyway-core:10.0.0'
+    implementation 'org.flywaydb:flyway-database-postgresql:10.0.0'
+
+    // Keycloak
+    implementation 'org.keycloak:keycloak-spring-boot-starter:23.0.7'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // Для работы с JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+
+}
+
+flyway {
+    url = 'jdbc:postgresql://localhost:5432/aura_messenger'
+    user = 'postgres'
+    password = '233122'
+    schemas = ['public']
+    locations = ['filesystem:src/main/resources/db/migration']
+    baselineOnMigrate = true
+    cleanDisabled = false
 }
 

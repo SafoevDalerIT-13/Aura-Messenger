@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.messenger.user_service.domain.entity.UserEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity,Long> {
@@ -60,5 +61,19 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
 
         return cleaned;
     }
+
+    // Поиск пользователей
+    @Query("SELECT u FROM UserEntity u WHERE " +
+            "LOWER(u.login) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(u.username) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(u.email) LIKE LOWER(CONCAT('%', :query, '%'))")
+    List<UserEntity> searchUsers(@Param("query") String query);
+
+    @Query("SELECT u FROM UserEntity u WHERE " +
+            "(LOWER(u.login) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(u.username) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(u.email) LIKE LOWER(CONCAT('%', :query, '%'))) " +
+            "AND u.id != :excludeId")
+    List<UserEntity> searchUsersExcluding(@Param("query") String query, @Param("excludeId") Long excludeId);
 
 }

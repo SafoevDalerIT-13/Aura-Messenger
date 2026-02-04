@@ -4,136 +4,521 @@
     <meta charset="UTF-8">
     <title>Регистрация</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a6fd8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
-        .error {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--dark);
         }
-        .info {
-            color: #666;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-        button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
+
+        .register-container {
             width: 100%;
-            font-size: 16px;
+            max-width: 480px;
+            animation: fadeInUp 0.6s ease-out;
         }
-        button:hover {
-            background: #0056b3;
+
+        .register-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
+
+        .register-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
         }
-        .message {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
+
+        .logo {
             text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out;
         }
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
         }
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+
+        .logo p {
+            color: var(--gray);
+            font-size: 14px;
         }
+
+        .form-group {
+            margin-bottom: 24px;
+            animation: fadeIn 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .form-group:nth-child(6) { animation-delay: 0.6s; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
         .required:after {
             content: " *";
-            color: red;
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--light);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input:hover {
+            border-color: #cbd5e1;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+
+        input:focus + .input-icon {
+            color: var(--primary);
+        }
+
+        .info {
+            color: var(--gray);
+            font-size: 12px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .info i {
+            font-size: 14px;
+        }
+
+        .error {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: shake 0.5s ease;
+        }
+
+        .error i {
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            background: var(--gray-light);
+            color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-loading .btn-text {
+            opacity: 0;
+        }
+
+        .btn-spinner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-loading .btn-spinner {
+            opacity: 1;
+        }
+
+        .message {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            animation: slideDown 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+        }
+
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+            border: 1px solid #a7f3d0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-light);
+            color: var(--gray);
+            font-size: 14px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .footer a:hover {
+            color: var(--primary-dark);
+        }
+
+        .footer a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .footer a:hover:after {
+            width: 100%;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Дополнительные стили */
+        .password-toggle {
+            position: absolute;
+            right: 45px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--gray-light);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 0;
+        }
+
+        .strength-weak .progress-fill {
+            background: var(--danger);
+            width: 33%;
+        }
+
+        .strength-medium .progress-fill {
+            background: var(--warning);
+            width: 66%;
+        }
+
+        .strength-strong .progress-fill {
+            background: var(--success);
+            width: 100%;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 480px) {
+            .register-card {
+                padding: 30px 20px;
+            }
+
+            .logo h1 {
+                font-size: 28px;
+            }
+
+            input {
+                padding: 12px 14px;
+            }
+        }
+
+        /* Плавный скролл */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-<h2>Регистрация в мессенджере</h2>
+<div class="register-container">
+    <div class="register-card">
+        <div class="logo">
+            <h1>✉️ Мессенджер</h1>
+            <p>Присоединяйтесь к нашему сообществу</p>
+        </div>
 
-<div id="message"></div>
+        <div id="message"></div>
 
-<form id="registerForm">
-    <div class="form-group">
-        <label class="required">Логин:</label>
-        <input type="text" id="login" required
-               placeholder="example123"
-               minlength="3" maxlength="50"
-               pattern="[a-zA-Z0-9_]+">
-        <div class="info">3-50 символов, только латиница, цифры и подчеркивание</div>
-        <div class="error" id="loginError"></div>
+        <form id="registerForm">
+            <div class="form-group">
+                <label class="required">Логин</label>
+                <div class="input-wrapper">
+                    <input type="text" id="login" required
+                           placeholder="example123"
+                           minlength="3" maxlength="50"
+                           pattern="[a-zA-Z0-9_]+">
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+                <div class="info">
+                    <i class="fas fa-info-circle"></i>
+                    3-50 символов, только латиница, цифры и подчеркивание
+                </div>
+                <div class="error" id="loginError"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Имя пользователя</label>
+                <div class="input-wrapper">
+                    <input type="text" id="username"
+                           placeholder="Иван Иванов"
+                           maxlength="100">
+                    <i class="fas fa-id-card input-icon"></i>
+                </div>
+                <div class="info">
+                    <i class="fas fa-eye"></i>
+                    Как вас будут видеть другие
+                </div>
+                <div class="error" id="usernameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Номер телефона</label>
+                <div class="input-wrapper">
+                    <input type="tel" id="phone" required
+                           placeholder="+79991234567">
+                    <i class="fas fa-phone input-icon"></i>
+                </div>
+                <div class="info">
+                    <i class="fas fa-globe"></i>
+                    Международный формат: +79991234567
+                </div>
+                <div class="error" id="phoneError"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Email (необязательно)</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email"
+                           placeholder="example@mail.com">
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+                <div class="error" id="emailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Пароль</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" required
+                           minlength="6">
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                        <i class="far fa-eye"></i>
+                    </button>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+                <div class="info">
+                    <i class="fas fa-shield-alt"></i>
+                    Не менее 6 символов
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="error" id="passwordError"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Повторите пароль</label>
+                <div class="input-wrapper">
+                    <input type="password" id="confirmPassword" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                        <i class="far fa-eye"></i>
+                    </button>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+                <div class="error" id="confirmPasswordError"></div>
+            </div>
+
+            <button type="button" onclick="register()" class="btn btn-primary" id="registerBtn">
+                <span class="btn-text">Зарегистрироваться</span>
+                <div class="btn-spinner"></div>
+            </button>
+        </form>
+
+        <div class="footer">
+            Уже есть аккаунт? <a href="/login.html">Войти</a>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label>Имя пользователя:</label>
-        <input type="text" id="username"
-               placeholder="Иван Иванов"
-               maxlength="100">
-        <div class="info">Как вас будут видеть другие</div>
-        <div class="error" id="usernameError"></div>
-    </div>
-
-    <div class="form-group">
-        <label class="required">Номер телефона:</label>
-        <input type="tel" id="phone" required
-               placeholder="+79991234567">
-        <div class="info">Международный формат: +79991234567</div>
-        <div class="error" id="phoneError"></div>
-    </div>
-
-    <div class="form-group">
-        <label>Email (необязательно):</label>
-        <input type="email" id="email"
-               placeholder="example@mail.com">
-        <div class="error" id="emailError"></div>
-    </div>
-
-    <div class="form-group">
-        <label class="required">Пароль:</label>
-        <input type="password" id="password" required
-               minlength="6">
-        <div class="info">Не менее 6 символов</div>
-        <div class="error" id="passwordError"></div>
-    </div>
-
-    <div class="form-group">
-        <label class="required">Повторите пароль:</label>
-        <input type="password" id="confirmPassword" required>
-        <div class="error" id="confirmPasswordError"></div>
-    </div>
-
-    <button type="button" onclick="register()">Зарегистрироваться</button>
-</form>
-
-<p style="text-align: center; margin-top: 20px;">
-    Уже есть аккаунт? <a href="/login.html">Войти</a>
-</p>
+</div>
 
 <script>
     let isSubmitting = false;
@@ -160,20 +545,20 @@
         // Логин
         const loginPattern = /^[a-zA-Z0-9_]+$/;
         if (!userData.login || userData.login.length < 3) {
-            showError('loginError', 'Логин должен быть не менее 3 символов');
+            showError('loginError', '❌ Логин должен быть не менее 3 символов');
             isValid = false;
         } else if (!loginPattern.test(userData.login)) {
-            showError('loginError', 'Только латиница, цифры и подчеркивание');
+            showError('loginError', '❌ Только латиница, цифры и подчеркивание');
             isValid = false;
         }
 
         // Телефон
         const phonePattern = /^\+[1-9]\d{1,14}$/;
         if (!userData.phoneNumber) {
-            showError('phoneError', 'Номер телефона обязателен');
+            showError('phoneError', '❌ Номер телефона обязателен');
             isValid = false;
         } else if (!phonePattern.test(userData.phoneNumber)) {
-            showError('phoneError', 'Формат: +79991234567');
+            showError('phoneError', '❌ Формат: +79991234567');
             isValid = false;
         }
 
@@ -181,20 +566,20 @@
         if (userData.email) {
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailPattern.test(userData.email)) {
-                showError('emailError', 'Некорректный email');
+                showError('emailError', '❌ Некорректный email');
                 isValid = false;
             }
         }
 
         // Пароль
         if (!userData.password || userData.password.length < 6) {
-            showError('passwordError', 'Пароль должен быть не менее 6 символов');
+            showError('passwordError', '❌ Пароль должен быть не менее 6 символов');
             isValid = false;
         }
 
         // Подтверждение пароля
         if (userData.password !== userData.confirmPassword) {
-            showError('confirmPasswordError', 'Пароли не совпадают');
+            showError('confirmPasswordError', '❌ Пароли не совпадают');
             isValid = false;
         }
 
@@ -205,9 +590,8 @@
 
         // Блокируем кнопку
         isSubmitting = true;
-        const button = document.querySelector('button');
-        const originalText = button.textContent;
-        button.textContent = 'Регистрация...';
+        const button = document.getElementById('registerBtn');
+        button.classList.add('btn-loading');
         button.disabled = true;
 
         // Отправка
@@ -225,7 +609,7 @@
                 return response.json();
             })
             .then(data => {
-                showMessage('Регистрация успешна! Теперь войдите в систему.', 'success');
+                showMessage('✅ Регистрация успешна! Теперь войдите в систему.', 'success');
                 document.getElementById('registerForm').reset();
 
                 // Автопереход через 3 секунды
@@ -237,18 +621,18 @@
                 const errorText = error.message.toLowerCase();
 
                 if (errorText.includes('логин')) {
-                    showError('loginError', error.message);
+                    showError('loginError', '❌ ' + error.message);
                 } else if (errorText.includes('телефон') || errorText.includes('номер')) {
-                    showError('phoneError', error.message);
+                    showError('phoneError', '❌ ' + error.message);
                 } else if (errorText.includes('email') || errorText.includes('почт')) {
-                    showError('emailError', error.message);
+                    showError('emailError', '❌ ' + error.message);
                 } else {
-                    showMessage(error.message, 'error');
+                    showMessage('❌ ' + error.message, 'error');
                 }
             })
             .finally(() => {
                 isSubmitting = false;
-                button.textContent = originalText;
+                button.classList.remove('btn-loading');
                 button.disabled = false;
             });
     }
@@ -262,24 +646,52 @@
     function showError(elementId, message) {
         const element = document.getElementById(elementId);
         if (element) {
-            element.textContent = message;
+            element.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            element.style.display = 'block';
         }
     }
 
     function showMessage(text, type) {
         const messageDiv = document.getElementById('message');
-        messageDiv.textContent = text;
+        messageDiv.innerHTML = type === 'success'
+            ? `<i class="fas fa-check-circle"></i> ${text}`
+            : `<i class="fas fa-exclamation-circle"></i> ${text}`;
         messageDiv.className = `message ${type}`;
-        messageDiv.style.display = 'block';
+        messageDiv.style.display = 'flex';
+
+        if (type === 'success') {
+            setTimeout(() => {
+                messageDiv.style.animation = 'slideDown 0.5s ease-out reverse forwards';
+                setTimeout(() => messageDiv.style.display = 'none', 500);
+            }, 3000);
+        }
     }
 
     function hideMessage() {
-        document.getElementById('message').style.display = 'none';
+        const messageDiv = document.getElementById('message');
+        messageDiv.style.display = 'none';
+    }
+
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const toggle = input.nextElementSibling;
+        const icon = toggle.querySelector('i');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
     }
 
     // Маска для телефона
     document.addEventListener('DOMContentLoaded', function() {
         const phoneInput = document.getElementById('phone');
+        const passwordInput = document.getElementById('password');
 
         phoneInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
@@ -293,22 +705,68 @@
                 }
                 e.target.value = '+' + value;
 
-                // Ограничиваем длину
                 if (value.length > 11) {
                     e.target.value = '+' + value.substring(0, 11);
                 }
             }
         });
 
-        // Автофокус на логин
-        document.getElementById('login').focus();
+        // Проверка сложности пароля
+        passwordInput.addEventListener('input', function(e) {
+            const password = e.target.value;
+            const progressBar = this.closest('.form-group').querySelector('.progress-bar');
+
+            progressBar.classList.remove('strength-weak', 'strength-medium', 'strength-strong');
+
+            if (password.length >= 6) {
+                let strength = 0;
+                if (/[a-z]/.test(password)) strength++;
+                if (/[A-Z]/.test(password)) strength++;
+                if (/[0-9]/.test(password)) strength++;
+                if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+                if (strength === 1) {
+                    progressBar.classList.add('strength-weak');
+                } else if (strength === 2 || strength === 3) {
+                    progressBar.classList.add('strength-medium');
+                } else if (strength === 4) {
+                    progressBar.classList.add('strength-strong');
+                }
+            }
+        });
+
+        // Автофокус на логин с анимацией
+        setTimeout(() => {
+            document.getElementById('login').focus();
+            document.getElementById('login').style.animation = 'pulse 1s';
+            setTimeout(() => document.getElementById('login').style.animation = '', 1000);
+        }, 300);
 
         // Обработка параметра registered
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('registered')) {
-            showMessage('Регистрация успешна! Теперь войдите в систему.', 'success');
+            showMessage('✅ Регистрация успешна! Теперь войдите в систему.', 'success');
             window.history.replaceState({}, '', '/auth.html');
         }
+
+        // Добавляем плавную загрузку для всех элементов
+        document.querySelectorAll('.form-group').forEach((group, index) => {
+            group.style.animationDelay = `${index * 0.1}s`;
+        });
+    });
+
+    // Добавляем hover эффекты для всех инпутов
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+
+            input.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
     });
 </script>
 </body>

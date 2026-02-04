@@ -2,8 +2,7 @@ package ru.messenger.user_service.domain.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -150,4 +149,105 @@ public class UserService {
         return userMapper.toResponseDto(updated);
     }
 
+    /**
+     * Проверяет, является ли пользователь владельцем ресурса
+     */
+    public boolean isOwner(Long userId, String currentUsername) {
+        try {
+            // Находим текущего пользователя
+            UserEntity currentUser = userRepository.findByUsername(currentUsername)
+                    .orElseThrow(() -> new UserNotFoundException("User not found: " + currentUsername));
+
+            // Проверяем, является ли текущий пользователь владельцем ресурса
+            boolean isOwner = currentUser.getId().equals(userId);
+
+            if (isOwner) {
+                log.debug("Access granted: user {} is owner of resource {}", currentUsername, userId);
+            } else {
+                log.warn("Access denied: user {} is not owner of resource {}", currentUsername, userId);
+            }
+
+            return isOwner;
+
+        } catch (Exception e) {
+            log.error("Error checking ownership: ", e);
+            return false;
+        }
+    }
+
+    /**
+     * Получает ID пользователя по username
+     */
+    public Long getUserIdByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(UserEntity::getId)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + username));
+    }
+
+    /**
+     * Проверяет существование пользователя
+     */
+    public boolean userExists(Long userId) {
+        return userRepository.existsById(userId);
+    }
+
+    /**
+     * Получает ID текущего пользователя по username
+     */
+    public Long getCurrentUserId(String username) {
+        return userRepository.findByUsername(username)
+                .map(UserEntity::getId)
+                .orElseThrow(() -> {
+                    log.error("User not found for username: {}", username);
+                    return new UserNotFoundException("User not found: " + username);
+                });
+    }
+
+    /**
+     * Получает ID текущего пользователя из UserDetails
+     */
+    public Long getCurrentUserId(UserDetails userDetails) {
+        if (userDetails == null) {
+            throw new RuntimeException("User not authenticated");
+        }
+        return getCurrentUserId(userDetails.getUsername());
+    }
+
+    /**
+     * Получает текущего пользователя по username
+     */
+    public UserEntity getCurrentUser(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + username));
+    }
+
+    /**
+     * Получает текущего пользователя из UserDetails
+     */
+    public UserEntity getCurrentUser(UserDetails userDetails) {
+        if (userDetails == null) {
+            throw new RuntimeException("User not authenticated");
+        }
+        return getCurrentUser(userDetails.getUsername());
+    }
+
+    /**
+     * Получает профиль текущего пользователя
+     */
+    public UserEntity getMyProfile(String username) {
+        UserEntity user = getCurrentUser(username);
+        // Можно добавить дополнительную логику, если нужно
+        return user;
+    }
+
+    /**
+     * Проверяет, является ли пользователь владельцем ресурса
+     * (альтернативная версия с UserDetails)
+     */
+    public boolean isOwner(Long userId, UserDetails userDetails) {
+        if (userDetails == null) {
+            return false;
+        }
+        return isOwner(userId, userDetails.getUsername());
+    }
 }
